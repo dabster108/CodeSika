@@ -18,11 +18,14 @@ public class background extends JFrame {
         sidebar.setPreferredSize(new Dimension(220, 600));
         sidebar.setLayout(null); // Absolute positioning for custom design
 
-        // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\manss.png");
-        Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        JLabel userIcon = new JLabel(new ImageIcon(scaledImage));
+        // User Profile Placeholder
+        JLabel userIcon = new JLabel("User");
         userIcon.setBounds(60, 30, 100, 100);
+        userIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        userIcon.setFont(new Font("Arial", Font.BOLD, 20));
+        userIcon.setForeground(Color.WHITE);
+        userIcon.setOpaque(true);
+        userIcon.setBackground(new Color(70, 70, 70)); // Placeholder background
         sidebar.add(userIcon);
 
         JLabel usernameLabel = new JLabel("Hello, Dikshanta");
@@ -34,15 +37,15 @@ public class background extends JFrame {
         // Sidebar Buttons with Hover Animation
         JButton dashboardBtn = createSidebarButton("Dashboard", 180);
         JButton profileBtn = createSidebarButton("Profile", 240);
-        JButton aboutBtn = createSidebarButton("About", 300);
-        JButton pointsBtn = createSidebarButton("Points", 360);
+        JButton messagesBtn = createSidebarButton("Messages", 300);
+        JButton settingsBtn = createSidebarButton("Settings", 360);
         JButton logoutBtn = createSidebarButton("Logout", 420);
 
         // Add buttons to the sidebar
         sidebar.add(dashboardBtn);
         sidebar.add(profileBtn);
-        sidebar.add(aboutBtn);
-        sidebar.add(pointsBtn);
+        sidebar.add(messagesBtn);
+        sidebar.add(settingsBtn);
         sidebar.add(logoutBtn);
 
         // Main Content Panel
