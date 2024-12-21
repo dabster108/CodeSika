@@ -18,14 +18,11 @@ public class background extends JFrame {
         sidebar.setPreferredSize(new Dimension(220, 600));
         sidebar.setLayout(null); // Absolute positioning for custom design
 
-        // User Profile Placeholder
-        JLabel userIcon = new JLabel("User");
+        // User Profile Placeholder (Replaced with Image)
+        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\manss.png");
+        Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        JLabel userIcon = new JLabel(new ImageIcon(scaledImage));
         userIcon.setBounds(60, 30, 100, 100);
-        userIcon.setHorizontalAlignment(SwingConstants.CENTER);
-        userIcon.setFont(new Font("Arial", Font.BOLD, 20));
-        userIcon.setForeground(Color.WHITE);
-        userIcon.setOpaque(true);
-        userIcon.setBackground(new Color(70, 70, 70)); // Placeholder background
         sidebar.add(userIcon);
 
         JLabel usernameLabel = new JLabel("Hello, Dikshanta");
@@ -37,15 +34,15 @@ public class background extends JFrame {
         // Sidebar Buttons with Hover Animation
         JButton dashboardBtn = createSidebarButton("Dashboard", 180);
         JButton profileBtn = createSidebarButton("Profile", 240);
-        JButton messagesBtn = createSidebarButton("Messages", 300);
-        JButton settingsBtn = createSidebarButton("Settings", 360);
+        JButton aboutBtn = createSidebarButton("About", 300);
+        JButton pointsBtn = createSidebarButton("Points", 360);
         JButton logoutBtn = createSidebarButton("Logout", 420);
 
         // Add buttons to the sidebar
         sidebar.add(dashboardBtn);
         sidebar.add(profileBtn);
-        sidebar.add(messagesBtn);
-        sidebar.add(settingsBtn);
+        sidebar.add(aboutBtn);
+        sidebar.add(pointsBtn);
         sidebar.add(logoutBtn);
 
         // Main Content Panel
@@ -61,11 +58,21 @@ public class background extends JFrame {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add spacing
         contentPanel.add(titleLabel, BorderLayout.NORTH);
 
-        // Main Welcome Message
-        JLabel contentLabel = new JLabel("Welcome to the Enhanced Code Sika Dashboard", SwingConstants.CENTER);
-        contentLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-        contentLabel.setForeground(new Color(70, 70, 70));
-        contentPanel.add(contentLabel, BorderLayout.CENTER);
+        // Scrollable Horizontal Panel for Courses
+        JPanel coursePanel = new JPanel();
+        coursePanel.setLayout(new GridLayout(1, 0, 10, 10)); // Horizontal layout
+        coursePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        // Add course panels
+        coursePanel.add(createCoursePanel("Python Programming", "236 Videos"));
+        coursePanel.add(createCoursePanel("JavaScript", "18 Videos"));
+        coursePanel.add(createCoursePanel("Figma Design", "87 Videos"));
+        coursePanel.add(createCoursePanel("UI with Sketch", "29 Videos"));
+        coursePanel.add(createCoursePanel("PHP Developer", "124 Videos"));
+
+        JScrollPane scrollPane = new JScrollPane(coursePanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder()); // No border for scroll pane
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
 
         // Add components to the frame
         add(sidebar, BorderLayout.WEST);
@@ -100,6 +107,32 @@ public class background extends JFrame {
         });
 
         return button;
+    }
+
+    // Method to create individual course panels
+    private JPanel createCoursePanel(String title, String description) {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(150, 150)); // Fixed small size
+        panel.setBackground(new Color(240, 240, 255));
+        panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        panel.setLayout(new BorderLayout());
+
+        // Add title
+        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Add description
+        JLabel descriptionLabel = new JLabel(description, SwingConstants.CENTER);
+        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        panel.add(descriptionLabel, BorderLayout.CENTER);
+
+        // Add "Learn More" button
+        JButton learnMoreButton = new JButton("Learn More");
+        learnMoreButton.setFocusPainted(false);
+        panel.add(learnMoreButton, BorderLayout.SOUTH);
+
+        return panel;
     }
 
     public static void main(String[] args) {

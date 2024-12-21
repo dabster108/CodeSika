@@ -187,7 +187,7 @@ public class SignupPage extends JFrame {
         registerButton.setForeground(new Color(122, 157, 177));
         registerButton.setFont(new Font("Arial", Font.BOLD, 16));
         registerButton.setFocusPainted(false);
-        // You can add an action listener to handle registration logic
+      
         newWindow.add(registerButton);
 
         newWindow.setVisible(true);

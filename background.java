@@ -8,7 +8,7 @@ public class background extends JFrame {
     public background() {
         // Frame Settings
         setTitle("Code Sika Dashboard");
-        setSize(900, 600);
+        setSize(1200, 600); // Adjusted for extra space for the right panel
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -58,15 +58,48 @@ public class background extends JFrame {
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add spacing
         contentPanel.add(titleLabel, BorderLayout.NORTH);
 
-        // Main Welcome Message
-        JLabel contentLabel = new JLabel("Welcome to the Enhanced Code Sika Dashboard", SwingConstants.CENTER);
-        contentLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-        contentLabel.setForeground(new Color(70, 70, 70));
-        contentPanel.add(contentLabel, BorderLayout.CENTER);
+        // Scrollable Horizontal Panel for Courses
+        JPanel coursePanel = new JPanel();
+        coursePanel.setLayout(new GridLayout(1, 0, 10, 10)); // Horizontal layout
+        coursePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+
+        JScrollPane scrollPane = new JScrollPane(coursePanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder()); // No border for scroll pane
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Right Panel for Cards
+        JPanel rightPanel = new JPanel();
+        rightPanel.setPreferredSize(new Dimension(300, 600)); // Set size for right panel
+        rightPanel.setBackground(new Color(250, 250, 250));
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10)); // Add padding
+
+        // Title for right panel
+        JLabel rightPanelTitle = new JLabel("Courses", SwingConstants.CENTER);
+        rightPanelTitle.setFont(new Font("Arial", Font.BOLD, 18));
+        rightPanelTitle.setForeground(new Color(50, 50, 50));
+        rightPanel.add(rightPanelTitle, BorderLayout.NORTH);
+
+        // Scrollable panel for right side courses
+        JPanel rightCoursesPanel = new JPanel();
+        rightCoursesPanel.setLayout(new GridLayout(5, 1, 10, 10)); // Vertical layout with 5 cards
+        rightCoursesPanel.setBackground(new Color(250, 250, 250));
+
+        // Add cards to the right panel
+        rightCoursesPanel.add(createCoursePanel("React Basics", "45 Videos"));
+        rightCoursesPanel.add(createCoursePanel("Data Structures", "60 Videos"));
+        rightCoursesPanel.add(createCoursePanel("Machine Learning", "78 Videos"));
+        rightCoursesPanel.add(createCoursePanel("HTML & CSS", "35 Videos"));
+        rightCoursesPanel.add(createCoursePanel("Django Framework", "50 Videos"));
+
+        JScrollPane rightScrollPane = new JScrollPane(rightCoursesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        rightPanel.add(rightScrollPane, BorderLayout.CENTER);
 
         // Add components to the frame
         add(sidebar, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
+        add(rightPanel, BorderLayout.EAST); // Add the right panel
 
         // Make the frame visible
         setVisible(true);
@@ -97,6 +130,32 @@ public class background extends JFrame {
         });
 
         return button;
+    }
+
+    // Method to create individual course panels
+    private JPanel createCoursePanel(String title, String description) {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(150, 100)); // Fixed consistent size
+        panel.setBackground(new Color(240, 240, 255));
+        panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        panel.setLayout(new BorderLayout());
+
+        // Add title
+        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Add description
+        JLabel descriptionLabel = new JLabel(description, SwingConstants.CENTER);
+        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        panel.add(descriptionLabel, BorderLayout.CENTER);
+
+        // Add "Learn More" button
+        JButton learnMoreButton = new JButton("Learn More");
+        learnMoreButton.setFocusPainted(false);
+        panel.add(learnMoreButton, BorderLayout.SOUTH);
+
+        return panel; // Return the created panel
     }
 
     public static void main(String[] args) {
