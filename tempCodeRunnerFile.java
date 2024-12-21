@@ -1,14 +1,13 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import javax.swing.*;
 
-public class background extends JFrame {
+public class Background extends JFrame {
 
-    public background() {
+    public Background() {
         // Frame Settings
         setTitle("Code Sika Dashboard");
-        setSize(900, 600);
+        setSize(1200, 600); // Adjusted for extra space for the right panel
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -38,6 +37,13 @@ public class background extends JFrame {
         JButton pointsBtn = createSidebarButton("Points", 360);
         JButton logoutBtn = createSidebarButton("Logout", 420);
 
+        // Add action listeners for buttons
+        dashboardBtn.addActionListener(e -> showDashboard());
+        profileBtn.addActionListener(e -> showProfile());
+        aboutBtn.addActionListener(e -> showAbout());
+        pointsBtn.addActionListener(e -> showPoints());
+        logoutBtn.addActionListener(e -> logout());
+
         // Add buttons to the sidebar
         sidebar.add(dashboardBtn);
         sidebar.add(profileBtn);
@@ -62,21 +68,48 @@ public class background extends JFrame {
         JPanel coursePanel = new JPanel();
         coursePanel.setLayout(new GridLayout(1, 0, 10, 10)); // Horizontal layout
         coursePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
-        // Add course panels
-        coursePanel.add(createCoursePanel("Python Programming", "236 Videos"));
-        coursePanel.add(createCoursePanel("JavaScript", "18 Videos"));
-        coursePanel.add(createCoursePanel("Figma Design", "87 Videos"));
-        coursePanel.add(createCoursePanel("UI with Sketch", "29 Videos"));
-        coursePanel.add(createCoursePanel("PHP Developer", "124 Videos"));
+
+        // Sample courses
+        coursePanel.add(createCoursePanel("Java Basics", "20 Videos"));
+        coursePanel.add(createCoursePanel("Python Fundamentals", "30 Videos"));
+        coursePanel.add(createCoursePanel("C Programming", "50 Videos"));
 
         JScrollPane scrollPane = new JScrollPane(coursePanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(BorderFactory.createEmptyBorder()); // No border for scroll pane
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Right Panel for Courses
+        JPanel rightPanel = new JPanel();
+        rightPanel.setPreferredSize(new Dimension(300, 600)); // Set size for right panel
+        rightPanel.setBackground(new Color(250, 250, 250));
+        rightPanel.setLayout(new BorderLayout());
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10)); // Add padding
+
+        // Title for right panel
+        JLabel rightPanelTitle = new JLabel("Popular Courses", SwingConstants.CENTER);
+        rightPanelTitle.setFont(new Font("Arial", Font.BOLD, 18));
+        rightPanelTitle.setForeground(new Color(50, 50, 50));
+        rightPanel.add(rightPanelTitle, BorderLayout.NORTH);
+
+        // Scrollable panel for right side courses
+        JPanel rightCoursesPanel = new JPanel();
+        rightCoursesPanel.setLayout(new GridLayout(5, 1, 10, 10)); // Vertical layout with 5 cards
+        rightCoursesPanel.setBackground(new Color(250, 250, 250));
+
+        // Add cards to the right panel
+        rightCoursesPanel.add(createCoursePanel("React Basics", "45 Videos"));
+        rightCoursesPanel.add(createCoursePanel("Data Structures", "60 Videos"));
+        rightCoursesPanel.add(createCoursePanel("Machine Learning", "78 Videos"));
+        rightCoursesPanel.add(createCoursePanel("HTML & CSS", "35 Videos"));
+        rightCoursesPanel.add(createCoursePanel("Django Framework", "50 Videos"));
+
+        JScrollPane rightScrollPane = new JScrollPane(rightCoursesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        rightPanel.add(rightScrollPane, BorderLayout.CENTER);
+
         // Add components to the frame
         add(sidebar, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
+        add(rightPanel, BorderLayout.EAST); // Add the right panel
 
         // Make the frame visible
         setVisible(true);
@@ -112,7 +145,7 @@ public class background extends JFrame {
     // Method to create individual course panels
     private JPanel createCoursePanel(String title, String description) {
         JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(150, 150)); // Fixed small size
+        panel.setPreferredSize(new Dimension(150, 100)); // Fixed consistent size
         panel.setBackground(new Color(240, 240, 255));
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         panel.setLayout(new BorderLayout());
@@ -132,10 +165,32 @@ public class background extends JFrame {
         learnMoreButton.setFocusPainted(false);
         panel.add(learnMoreButton, BorderLayout.SOUTH);
 
-        return panel;
+        return panel; // Return the created panel
+    }
+
+    // Example Methods for Button Actions
+    private void showDashboard() {
+        JOptionPane.showMessageDialog(this, "Showing Dashboard");
+    }
+
+    private void showProfile() {
+        JOptionPane.showMessageDialog(this, "Showing Profile");
+    }
+
+    private void showAbout() {
+        JOptionPane.showMessageDialog(this, "Showing About");
+    }
+
+    private void showPoints() {
+        JOptionPane.showMessageDialog(this, "Showing Points");
+    }
+
+    private void logout() {
+        JOptionPane.showMessageDialog(this, "Logging out...");
+        System.exit(0);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new background());
+        SwingUtilities.invokeLater(() -> new Background());
     }
 }
