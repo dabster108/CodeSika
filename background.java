@@ -15,7 +15,7 @@ public class background extends JFrame {
         // Sidebar Navigation Panel
         JPanel sidebar = new JPanel();
         sidebar.setBackground(new Color(30, 30, 30)); // Dark sidebar
-        sidebar.setPreferredSize(new Dimension(220, 600));
+        sidebar.setPreferredSize(new Dimension(220, 700));
         sidebar.setLayout(null); // Absolute positioning for custom design
 
         // User Profile Placeholder (Replaced with Image)
@@ -96,6 +96,22 @@ public class background extends JFrame {
 
         JButton startQuizButton = new JButton("Start Quiz");
         startQuizButton.setFocusPainted(false);
+        startQuizButton.setBackground(new Color(30, 144, 255)); // Set button color
+        startQuizButton.setForeground(Color.WHITE); // Set text color
+        startQuizButton.setFont(new Font("Arial", Font.BOLD, 12));
+        startQuizButton.setBorderPainted(false);
+        startQuizButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        startQuizButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                startQuizButton.setBackground(new Color(0, 120, 215)); // Change color on hover
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                startQuizButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
+            }
+        });
         quizPanel.add(startQuizButton, BorderLayout.SOUTH);
 
         contentPanel.add(quizPanel, BorderLayout.SOUTH);
@@ -139,7 +155,7 @@ public class background extends JFrame {
     private JPanel createCoursePanel(String title, String description) {
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(150, 120)); // Fixed consistent size
-        panel.setBackground(new Color(240, 240, 255));
+        panel.setBackground(new Color(255, 255, 255));
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         panel.setLayout(new BorderLayout());
 
@@ -156,6 +172,22 @@ public class background extends JFrame {
         // Add "Learn More" button
         JButton learnMoreButton = new JButton("Learn More");
         learnMoreButton.setFocusPainted(false);
+        learnMoreButton.setBackground(new Color(30, 144, 255)); // Set button color
+        learnMoreButton.setForeground(Color.WHITE); // Set text color
+        learnMoreButton.setFont(new Font("Arial", Font.BOLD, 12));
+        learnMoreButton.setBorderPainted(false);
+        learnMoreButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        learnMoreButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                learnMoreButton.setBackground(new Color(0, 120, 215)); // Change color on hover
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                learnMoreButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
+            }
+        });
         panel.add(learnMoreButton, BorderLayout.SOUTH);
 
         return panel; // Return the created panel
