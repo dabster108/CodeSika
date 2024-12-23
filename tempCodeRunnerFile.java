@@ -1,196 +1,207 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
-public class Background extends JFrame {
+public class SignupPage extends JFrame {
 
-    public Background() {
-        // Frame Settings
-        setTitle("Code Sika Dashboard");
-        setSize(1200, 600); // Adjusted for extra space for the right panel
+    public SignupPage() {
+        setTitle("Code Sika Signup Page");
+        setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        setResizable(false);
+        setLayout(null);
 
-        // Sidebar Navigation Panel
-        JPanel sidebar = new JPanel();
-        sidebar.setBackground(new Color(30, 30, 30)); // Dark sidebar
-        sidebar.setPreferredSize(new Dimension(220, 600));
-        sidebar.setLayout(null); // Absolute positioning for custom design
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBounds(0, 0, 450, 600);
+        leftPanel.setBackground(new Color(34, 45, 65));
+        leftPanel.setLayout(new BorderLayout());
 
-        // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\manss.png");
-        Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        JLabel userIcon = new JLabel(new ImageIcon(scaledImage));
-        userIcon.setBounds(60, 30, 100, 100);
-        sidebar.add(userIcon);
+        JLabel brandingLabel = new JLabel("Code Tutor");
+        brandingLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        brandingLabel.setForeground(new Color(255, 255, 255));
+        brandingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        brandingLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        leftPanel.add(brandingLabel, BorderLayout.NORTH);
 
-        JLabel usernameLabel = new JLabel("Hello, Dikshanta");
-        usernameLabel.setForeground(Color.WHITE);
-        usernameLabel.setBounds(60, 140, 120, 20);
-        usernameLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        sidebar.add(usernameLabel);
+        JPanel formPanel = new JPanel();
+        formPanel.setBounds(450, 0, 450, 600);
+        formPanel.setLayout(null);
+        formPanel.setBackground(new Color(245, 245, 245));
 
-        // Sidebar Buttons with Hover Animation
-        JButton dashboardBtn = createSidebarButton("Dashboard", 180);
-        JButton profileBtn = createSidebarButton("Profile", 240);
-        JButton aboutBtn = createSidebarButton("About", 300);
-        JButton pointsBtn = createSidebarButton("Points", 360);
-        JButton logoutBtn = createSidebarButton("Logout", 420);
+        JLabel animatedLabel = new JLabel();
+        animatedLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        animatedLabel.setForeground(new Color(34, 45, 65));
+        animatedLabel.setBounds(50, 30, 400, 30);
+        formPanel.add(animatedLabel);
 
-        // Add action listeners for buttons
-        dashboardBtn.addActionListener(e -> showDashboard());
-        profileBtn.addActionListener(e -> showProfile());
-        aboutBtn.addActionListener(e -> showAbout());
-        pointsBtn.addActionListener(e -> showPoints());
-        logoutBtn.addActionListener(e -> logout());
+        animateText(animatedLabel);
 
-        // Add buttons to the sidebar
-        sidebar.add(dashboardBtn);
-        sidebar.add(profileBtn);
-        sidebar.add(aboutBtn);
-        sidebar.add(pointsBtn);
-        sidebar.add(logoutBtn);
+        JLabel usernameLabel = createLabel("USERNAME", 50, 80);
+        formPanel.add(usernameLabel);
 
-        // Main Content Panel
-        JPanel contentPanel = new JPanel();
-        contentPanel.setBackground(new Color(240, 240, 240));
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 2)); // Add border
+        JTextField usernameField = createTextField(50, 110);
+        formPanel.add(usernameField);
 
-        // Title in the middle top
-        JLabel titleLabel = new JLabel("Code Sika", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titleLabel.setForeground(new Color(50, 50, 50));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add spacing
-        contentPanel.add(titleLabel, BorderLayout.NORTH);
+        JLabel passwordLabel = createLabel("PASSWORD", 50, 160);
+        formPanel.add(passwordLabel);
 
-        // Scrollable Horizontal Panel for Courses
-        JPanel coursePanel = new JPanel();
-        coursePanel.setLayout(new GridLayout(1, 0, 10, 10)); // Horizontal layout
-        coursePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(50, 190, 300, 30);
+        passwordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        formPanel.add(passwordField);
 
-        // Sample courses
-        coursePanel.add(createCoursePanel("Java Basics", "20 Videos"));
-        coursePanel.add(createCoursePanel("Python Fundamentals", "30 Videos"));
-        coursePanel.add(createCoursePanel("C Programming", "50 Videos"));
+        JCheckBox termsCheckBox = new JCheckBox("I agree to all terms of service");
+        termsCheckBox.setBounds(50, 240, 250, 20);
+        termsCheckBox.setForeground(new Color(34, 45, 65));
+        termsCheckBox.setBackground(formPanel.getBackground());
+        formPanel.add(termsCheckBox);
 
-        JScrollPane scrollPane = new JScrollPane(coursePanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder()); // No border for scroll pane
-        contentPanel.add(scrollPane, BorderLayout.CENTER);
+        JButton loginButton = new JButton("Login");
+        loginButton.setBounds(50, 280, 120, 40);
+        loginButton.setBackground(new Color(34, 45, 65));
+        loginButton.setForeground(new Color(255, 255, 255));
+        loginButton.setFont(new Font("Arial", Font.BOLD, 16));
+        loginButton.setFocusPainted(false);
+        formPanel.add(loginButton);
 
-        // Right Panel for Courses
-        JPanel rightPanel = new JPanel();
-        rightPanel.setPreferredSize(new Dimension(300, 600)); // Set size for right panel
-        rightPanel.setBackground(new Color(250, 250, 250));
-        rightPanel.setLayout(new BorderLayout());
-        rightPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10)); // Add padding
+        JButton signUpButton = new JButton("Sign Up");
+        signUpButton.setBounds(190, 280, 120, 40);
+        signUpButton.setBackground(new Color(34, 45, 65));
+        signUpButton.setForeground(new Color(255, 255, 255));
+        signUpButton.setFont(new Font("Arial", Font.BOLD, 16));
+        signUpButton.setFocusPainted(false);
+        signUpButton.addActionListener(e -> openSignupWindow());
+        formPanel.add(signUpButton);
 
-        // Title for right panel
-        JLabel rightPanelTitle = new JLabel("Popular Courses", SwingConstants.CENTER);
-        rightPanelTitle.setFont(new Font("Arial", Font.BOLD, 18));
-        rightPanelTitle.setForeground(new Color(50, 50, 50));
-        rightPanel.add(rightPanelTitle, BorderLayout.NORTH);
+        add(leftPanel);
+        add(formPanel);
 
-        // Scrollable panel for right side courses
-        JPanel rightCoursesPanel = new JPanel();
-        rightCoursesPanel.setLayout(new GridLayout(5, 1, 10, 10)); // Vertical layout with 5 cards
-        rightCoursesPanel.setBackground(new Color(250, 250, 250));
-
-        // Add cards to the right panel
-        rightCoursesPanel.add(createCoursePanel("React Basics", "45 Videos"));
-        rightCoursesPanel.add(createCoursePanel("Data Structures", "60 Videos"));
-        rightCoursesPanel.add(createCoursePanel("Machine Learning", "78 Videos"));
-        rightCoursesPanel.add(createCoursePanel("HTML & CSS", "35 Videos"));
-        rightCoursesPanel.add(createCoursePanel("Django Framework", "50 Videos"));
-
-        JScrollPane rightScrollPane = new JScrollPane(rightCoursesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        rightPanel.add(rightScrollPane, BorderLayout.CENTER);
-
-        // Add components to the frame
-        add(sidebar, BorderLayout.WEST);
-        add(contentPanel, BorderLayout.CENTER);
-        add(rightPanel, BorderLayout.EAST); // Add the right panel
-
-        // Make the frame visible
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    // Helper method to create styled sidebar buttons with hover effect
-    private JButton createSidebarButton(String text, int yPosition) {
-        JButton button = new JButton(text);
-        button.setBounds(20, yPosition, 180, 40);
-        button.setFocusPainted(false);
-        button.setBackground(new Color(45, 45, 45));
-        button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.PLAIN, 16));
-        button.setHorizontalAlignment(SwingConstants.LEFT);
-        button.setBorderPainted(false);
+    private void animateText(JLabel label) {
+        String firstText = "Welcome to Code Sika";
+        String secondText = "Login or Sign Up";
+        int duration = 15000;
 
-        // Add Hover Effect
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(70, 70, 70)); // Change color on hover
+        Timer timer = new Timer(100, null);
+        StringBuilder currentText = new StringBuilder();
+        boolean[] isSecondPhase = {false};
+        long startTime = System.currentTimeMillis();
+        int[] charIndex = {0};
+
+        timer.addActionListener(e -> {
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            if (elapsedTime >= duration) {
+                label.setText(firstText);
+                timer.stop();
+                return;
             }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(new Color(45, 45, 45)); // Restore color
+            String targetText = isSecondPhase[0] ? secondText : firstText;
+
+            if (charIndex[0] < targetText.length()) {
+                currentText.append(targetText.charAt(charIndex[0]));
+                label.setText(currentText.toString());
+                charIndex[0]++;
+            } else {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                isSecondPhase[0] = !isSecondPhase[0];
+                currentText.setLength(0);
+                charIndex[0] = 0;
             }
         });
 
-        return button;
+        timer.start();
     }
 
-    // Method to create individual course panels
-    private JPanel createCoursePanel(String title, String description) {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(150, 100)); // Fixed consistent size
-        panel.setBackground(new Color(240, 240, 255));
-        panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        panel.setLayout(new BorderLayout());
+    private void openSignupWindow() {
+        JFrame newWindow = new JFrame("Sign Up");
+        newWindow.setSize(400, 400); // Adjust window size for additional fields
+        newWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newWindow.setLocationRelativeTo(null);
+        newWindow.setLayout(null);  // Use absolute positioning
 
-        // Add title
-        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        panel.add(titleLabel, BorderLayout.NORTH);
+        // Full Name
+        JLabel fullNameLabel = new JLabel("Full Name");
+        fullNameLabel.setBounds(50, 30, 100, 20);
+        fullNameLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        fullNameLabel.setForeground(new Color(34, 45, 65));
+        newWindow.add(fullNameLabel);
 
-        // Add description
-        JLabel descriptionLabel = new JLabel(description, SwingConstants.CENTER);
-        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        panel.add(descriptionLabel, BorderLayout.CENTER);
+        JTextField fullNameField = new JTextField();
+        fullNameField.setBounds(50, 60, 300, 30);
+        fullNameField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        newWindow.add(fullNameField);
 
-        // Add "Learn More" button
-        JButton learnMoreButton = new JButton("Learn More");
-        learnMoreButton.setFocusPainted(false);
-        panel.add(learnMoreButton, BorderLayout.SOUTH);
+        // Username
+        JLabel usernameLabel = new JLabel("Username");
+        usernameLabel.setBounds(50, 100, 100, 20);
+        usernameLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        usernameLabel.setForeground(new Color(34, 45, 65));
+        newWindow.add(usernameLabel);
 
-        return panel; // Return the created panel
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(50, 130, 300, 30);
+        usernameField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        newWindow.add(usernameField);
+
+        // Email
+        JLabel emailLabel = new JLabel("Email");
+        emailLabel.setBounds(50, 170, 100, 20);
+        emailLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        emailLabel.setForeground(new Color(34, 45, 65));
+        newWindow.add(emailLabel);
+
+        JTextField emailField = new JTextField();
+        emailField.setBounds(50, 200, 300, 30);
+        emailField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        newWindow.add(emailField);
+
+        // Password
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setBounds(50, 240, 100, 20);
+        passwordLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        passwordLabel.setForeground(new Color(34, 45, 65));
+        newWindow.add(passwordLabel);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(50, 270, 300, 30);
+        passwordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        newWindow.add(passwordField);
+
+        // Register Button
+        JButton registerButton = new JButton("Register");
+        registerButton.setBounds(50, 320, 300, 40);
+        registerButton.setBackground(new Color(34, 45, 65));
+        registerButton.setForeground(new Color(255, 255, 255));
+        registerButton.setFont(new Font("Arial", Font.BOLD, 16));
+        registerButton.setFocusPainted(false);
+        newWindow.add(registerButton);
+
+        newWindow.setVisible(true);
     }
 
-    // Example Methods for Button Actions
-    private void showDashboard() {
-        JOptionPane.showMessageDialog(this, "Showing Dashboard");
+    private JLabel createLabel(String text, int x, int y) {
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, 300, 20);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+        label.setForeground(new Color(34, 45, 65));
+        return label;
     }
 
-    private void showProfile() {
-        JOptionPane.showMessageDialog(this, "Showing Profile");
-    }
-
-    private void showAbout() {
-        JOptionPane.showMessageDialog(this, "Showing About");
-    }
-
-    private void showPoints() {
-        JOptionPane.showMessageDialog(this, "Showing Points");
-    }
-
-    private void logout() {
-        JOptionPane.showMessageDialog(this, "Logging out...");
-        System.exit(0);
+    private JTextField createTextField(int x, int y) {
+        JTextField textField = new JTextField();
+        textField.setBounds(x, y, 300, 30);
+        textField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        return textField;
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Background());
+        SwingUtilities.invokeLater(SignupPage::new);
     }
 }
