@@ -35,11 +35,11 @@ public class SignupPage extends JFrame {
 
         animateText(animatedLabel);
 
-        JLabel fullNameLabel = createLabel("FULL NAME", 50, 80);
-        formPanel.add(fullNameLabel);
+        JLabel usernameLabel = createLabel("USERNAME", 50, 80);
+        formPanel.add(usernameLabel);
 
-        JTextField fullNameField = createTextField(50, 110);
-        formPanel.add(fullNameField);
+        JTextField usernameField = createTextField(50, 110);
+        formPanel.add(usernameField);
 
         JLabel passwordLabel = createLabel("PASSWORD", 50, 160);
         formPanel.add(passwordLabel);
@@ -49,20 +49,14 @@ public class SignupPage extends JFrame {
         passwordField.setBorder(BorderFactory.createLineBorder(new Color(8, 2, 5), 1));
         formPanel.add(passwordField);
 
-        JLabel emailLabel = createLabel("EMAIL", 50, 240);
-        formPanel.add(emailLabel);
-
-        JTextField emailField = createTextField(50, 270);
-        formPanel.add(emailField);
-
         JCheckBox termsCheckBox = new JCheckBox("I agree to all terms of service");
-        termsCheckBox.setBounds(50, 320, 250, 20);
+        termsCheckBox.setBounds(50, 240, 250, 20);
         termsCheckBox.setForeground(new Color(8, 2, 5));
         termsCheckBox.setBackground(formPanel.getBackground());
         formPanel.add(termsCheckBox);
 
         JButton signInButton = new JButton("Sign In");
-        signInButton.setBounds(50, 360, 120, 40);
+        signInButton.setBounds(50, 280, 120, 40);
         signInButton.setBackground(new Color(8, 2, 5));
         signInButton.setForeground(new Color(122, 157, 177));
         signInButton.setFont(new Font("Arial", Font.BOLD, 16));
@@ -70,7 +64,7 @@ public class SignupPage extends JFrame {
         formPanel.add(signInButton);
 
         JButton signUpButton = new JButton("Sign Up");
-        signUpButton.setBounds(190, 360, 120, 40);
+        signUpButton.setBounds(190, 280, 120, 40);
         signUpButton.setBackground(new Color(8, 2, 5));
         signUpButton.setForeground(new Color(122, 157, 177));
         signUpButton.setFont(new Font("Arial", Font.BOLD, 16));
@@ -187,7 +181,6 @@ public class SignupPage extends JFrame {
         registerButton.setForeground(new Color(122, 157, 177));
         registerButton.setFont(new Font("Arial", Font.BOLD, 16));
         registerButton.setFocusPainted(false);
-      
         newWindow.add(registerButton);
 
         newWindow.setVisible(true);
