@@ -169,10 +169,6 @@ public class background extends JFrame {
         JPanel starRatingPanel = createStarRatingPanel();
         homePanel.add(starRatingPanel, BorderLayout.NORTH);
 
-        // Progress Bars Panel
-        JPanel progressBarsPanel = createProgressBarsPanel();
-        homePanel.add(progressBarsPanel, BorderLayout.CENTER);
-
         // Placeholder for future additions
         JPanel placeholderPanel = new JPanel();
         placeholderPanel.setPreferredSize(new Dimension(300, 0));
@@ -201,38 +197,6 @@ public class background extends JFrame {
         }
 
         return starRatingPanel;
-    }
-
-    // Method to create the progress bars panel
-    private JPanel createProgressBarsPanel() {
-        JPanel progressBarsPanel = new JPanel();
-        progressBarsPanel.setLayout(new BoxLayout(progressBarsPanel, BoxLayout.Y_AXIS));
-        progressBarsPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        progressBarsPanel.setBackground(new Color(240, 240, 240));
-
-        // Add progress bars for each course
-        progressBarsPanel.add(createCourseProgressBar("Python", 75));
-        progressBarsPanel.add(createCourseProgressBar("Java", 50));
-        progressBarsPanel.add(createCourseProgressBar("C++", 30));
-        progressBarsPanel.add(createCourseProgressBar("JavaScript", 90));
-
-        return progressBarsPanel;
-    }
-
-    // Method to create a course progress bar
-    private JPanel createCourseProgressBar(String courseName, int progress) {
-        JPanel coursePanel = new JPanel(new BorderLayout());
-        coursePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
-        coursePanel.setBackground(new Color(240, 240, 240));
-
-        JLabel courseLabel = new JLabel(courseName);
-        courseLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        coursePanel.add(courseLabel, BorderLayout.WEST);
-
-        CustomProgressBar progressBar = new CustomProgressBar(progress);
-        coursePanel.add(progressBar, BorderLayout.CENTER);
-
-        return coursePanel;
     }
 
     // Method to create the courses panel
@@ -306,40 +270,5 @@ public class background extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new background());
-    }
-}
-
-// Custom progress bar class
-class CustomProgressBar extends JComponent {
-    private int progress;
-
-    public CustomProgressBar(int progress) {
-        this.progress = progress;
-        setPreferredSize(new Dimension(150, 10)); // Smaller height
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Background
-        g2d.setColor(new Color(200, 200, 200));
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-
-        // Progress
-        g2d.setColor(new Color(30, 144, 255));
-        int width = (int) (getWidth() * (progress / 100.0));
-        g2d.fillRoundRect(0, 0, width, getHeight(), 15, 15);
-
-        // Text
-        g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Arial", Font.BOLD, 14));
-        String text = progress + "%";
-        FontMetrics fm = g2d.getFontMetrics();
-        int textWidth = fm.stringWidth(text);
-        int textHeight = fm.getAscent();
-        g2d.drawString(text, (getWidth() - textWidth) / 2, (getHeight() + textHeight) / 2 - 3);
     }
 }
