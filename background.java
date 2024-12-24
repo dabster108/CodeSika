@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 public class background extends JFrame {
@@ -37,17 +35,17 @@ public class background extends JFrame {
         sidebar.add(usernameLabel);
 
         // Sidebar Buttons with Hover Animation
-        JButton dashboardBtn = createSidebarButton("Dashboard", 180);
+        JButton homeBtn = createSidebarButton("Home", 180);
         JButton profileBtn = createSidebarButton("Profile", 240);
         JButton aboutBtn = createSidebarButton("About", 300);
-        JButton pointsBtn = createSidebarButton("Points", 360);
+        JButton coursesBtn = createSidebarButton("Courses", 360);
         JButton logoutBtn = createSidebarButton("Logout", 420);
 
         // Add buttons to the sidebar
-        sidebar.add(dashboardBtn);
+        sidebar.add(homeBtn);
         sidebar.add(profileBtn);
         sidebar.add(aboutBtn);
-        sidebar.add(pointsBtn);
+        sidebar.add(coursesBtn);
         sidebar.add(logoutBtn);
 
         // Indicator Panel
@@ -60,9 +58,9 @@ public class background extends JFrame {
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        // Dashboard Panel
-        JPanel dashboardPanel = createDashboardPanel();
-        contentPanel.add(dashboardPanel, "Dashboard");
+        // Home Panel
+        JPanel homePanel = createHomePanel();
+        contentPanel.add(homePanel, "Home");
 
         // Profile Panel
         JPanel profilePanel = new JPanel();
@@ -82,18 +80,18 @@ public class background extends JFrame {
         aboutPanel.add(aboutLabel, BorderLayout.CENTER);
         contentPanel.add(aboutPanel, "About");
 
-        // Quiz Panel
-        JPanel quizPanel = createQuizPanel();
-        contentPanel.add(quizPanel, "Quiz");
+        // Courses Panel
+        JPanel coursesPanel = createCoursesPanel();
+        contentPanel.add(coursesPanel, "Courses");
 
         // Add components to the frame
         add(sidebar, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
 
         // Add action listeners to sidebar buttons
-        dashboardBtn.addActionListener(e -> {
-            cardLayout.show(contentPanel, "Dashboard");
-            updateIndicatorPosition(dashboardBtn);
+        homeBtn.addActionListener(e -> {
+            cardLayout.show(contentPanel, "Home");
+            updateIndicatorPosition(homeBtn);
         });
         profileBtn.addActionListener(e -> {
             cardLayout.show(contentPanel, "Profile");
@@ -102,6 +100,10 @@ public class background extends JFrame {
         aboutBtn.addActionListener(e -> {
             cardLayout.show(contentPanel, "About");
             updateIndicatorPosition(aboutBtn);
+        });
+        coursesBtn.addActionListener(e -> {
+            cardLayout.show(contentPanel, "Courses");
+            updateIndicatorPosition(coursesBtn);
         });
 
         // Make the frame visible
@@ -120,14 +122,14 @@ public class background extends JFrame {
         button.setBorderPainted(false);
 
         // Add Hover Effect
-        button.addMouseListener(new MouseAdapter() {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
                 button.setBackground(new Color(70, 70, 70)); // Change color on hover
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(java.awt.event.MouseEvent e) {
                 button.setBackground(new Color(45, 45, 45)); // Restore color
             }
         });
@@ -140,80 +142,56 @@ public class background extends JFrame {
         indicatorPanel.setLocation(0, button.getY());
     }
 
-    // Method to create the dashboard panel
-    private JPanel createDashboardPanel() {
-        JPanel dashboardPanel = new JPanel();
-        dashboardPanel.setBackground(new Color(240, 240, 240));
-        dashboardPanel.setLayout(new BorderLayout());
-        dashboardPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 2));
+    // Method to create the home panel
+    private JPanel createHomePanel() {
+        JPanel homePanel = new JPanel();
+        homePanel.setBackground(new Color(240, 240, 240));
+        homePanel.setLayout(new BorderLayout());
+        homePanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 2));
 
         // Title in the middle top
         JLabel titleLabel = new JLabel("Code Sika", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
         titleLabel.setForeground(new Color(50, 50, 50));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add spacing
-        dashboardPanel.add(titleLabel, BorderLayout.NORTH);
+        homePanel.add(titleLabel, BorderLayout.NORTH);
 
-        // Courses Section Title
-        JLabel coursesTitle = new JLabel("Courses Offered There", SwingConstants.CENTER);
-        coursesTitle.setFont(new Font("Arial", Font.BOLD, 22));
-        coursesTitle.setForeground(new Color(50, 50, 50));
-        coursesTitle.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
-        dashboardPanel.add(coursesTitle, BorderLayout.CENTER);
+        // Welcome message
+        JLabel welcomeLabel = new JLabel("Welcome to the Code Sika Dashboard!", SwingConstants.CENTER);
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        welcomeLabel.setForeground(new Color(50, 50, 50));
+        welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        homePanel.add(welcomeLabel, BorderLayout.CENTER);
 
-        // Scrollable Horizontal Panel for Courses
-        JPanel coursePanel = new JPanel();
-        coursePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20)); // Horizontal layout with gaps
-        coursePanel.setBackground(new Color(240, 240, 240)); // Set background color
+        return homePanel;
+    }
+
+    // Method to create the courses panel
+    private JPanel createCoursesPanel() {
+        JPanel coursesPanel = new JPanel();
+        coursesPanel.setBackground(new Color(240, 240, 240));
+        coursesPanel.setLayout(new BorderLayout());
+
+        JLabel coursesTitle = new JLabel("Courses", SwingConstants.CENTER);
+        coursesTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        coursesTitle.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        coursesPanel.add(coursesTitle, BorderLayout.NORTH);
+
+        JPanel coursesContentPanel = new JPanel();
+        coursesContentPanel.setLayout(new BoxLayout(coursesContentPanel, BoxLayout.Y_AXIS));
+        coursesContentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Add course panels
-        coursePanel.add(createCoursePanel("React Basics", "45 Videos"));
-        coursePanel.add(createCoursePanel("Data Structures", "60 Videos"));
-        coursePanel.add(createCoursePanel("Machine Learning", "78 Videos"));
-        coursePanel.add(createCoursePanel("HTML & CSS", "35 Videos"));
-        coursePanel.add(createCoursePanel("Django Framework", "50 Videos"));
+        coursesContentPanel.add(createCoursePanel("Java Basics", "45 Videos"));
+        coursesContentPanel.add(createCoursePanel("Advanced Java", "60 Videos"));
+        coursesContentPanel.add(createCoursePanel("Spring Framework", "78 Videos"));
+        coursesContentPanel.add(createCoursePanel("Hibernate", "35 Videos"));
+        coursesContentPanel.add(createCoursePanel("Java EE", "50 Videos"));
 
-        JScrollPane courseScrollPane = new JScrollPane(coursePanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        dashboardPanel.add(courseScrollPane, BorderLayout.CENTER); // Directly add coursePanel
+        JScrollPane coursesScrollPane = new JScrollPane(coursesContentPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        coursesPanel.add(coursesScrollPane, BorderLayout.CENTER);
 
-        // Quiz Panel below the courses
-        JPanel quizPanel = new JPanel();
-        quizPanel.setLayout(new BorderLayout());
-        quizPanel.setBackground(new Color(240, 240, 255));
-        quizPanel.setPreferredSize(new Dimension(1200, 120));
-
-        JLabel quizTitleLabel = new JLabel("Quiz: Java Basics", SwingConstants.CENTER);
-        quizTitleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        quizPanel.add(quizTitleLabel, BorderLayout.NORTH);
-
-        JLabel quizDescriptionLabel = new JLabel("Test your Java skills with this quiz!", SwingConstants.CENTER);
-        quizDescriptionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        quizPanel.add(quizDescriptionLabel, BorderLayout.CENTER);
-
-        JButton startQuizButton = new JButton("Start Quiz");
-        startQuizButton.setFocusPainted(false);
-        startQuizButton.setBackground(new Color(30, 144, 255)); // Set button color
-        startQuizButton.setForeground(Color.WHITE); // Set text color
-        startQuizButton.setFont(new Font("Arial", Font.BOLD, 12));
-        startQuizButton.setBorderPainted(false);
-        startQuizButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        startQuizButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                startQuizButton.setBackground(new Color(0, 120, 215)); // Change color on hover
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                startQuizButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
-            }
-        });
-        startQuizButton.addActionListener(e -> cardLayout.show(contentPanel, "Quiz"));
-        quizPanel.add(startQuizButton, BorderLayout.SOUTH);
-
-        dashboardPanel.add(quizPanel, BorderLayout.SOUTH);
-
-        return dashboardPanel;
+        return coursesPanel;
     }
 
     // Method to create individual course panels
@@ -242,108 +220,20 @@ public class background extends JFrame {
         learnMoreButton.setFont(new Font("Arial", Font.BOLD, 12));
         learnMoreButton.setBorderPainted(false);
         learnMoreButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        learnMoreButton.addMouseListener(new MouseAdapter() {
+        learnMoreButton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
                 learnMoreButton.setBackground(new Color(0, 120, 215)); // Change color on hover
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(java.awt.event.MouseEvent e) {
                 learnMoreButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
             }
         });
         panel.add(learnMoreButton, BorderLayout.SOUTH);
 
         return panel; // Return the created panel
-    }
-
-    // Method to create the quiz panel
-    private JPanel createQuizPanel() {
-        JPanel quizPanel = new JPanel();
-        quizPanel.setBackground(new Color(240, 240, 240));
-        quizPanel.setLayout(new BorderLayout());
-
-        JLabel quizTitle = new JLabel("Java Basics Quiz", SwingConstants.CENTER);
-        quizTitle.setFont(new Font("Arial", Font.BOLD, 24));
-        quizTitle.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-        quizPanel.add(quizTitle, BorderLayout.NORTH);
-
-        JPanel questionsPanel = new JPanel();
-        questionsPanel.setLayout(new BoxLayout(questionsPanel, BoxLayout.Y_AXIS));
-        questionsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Sample questions
-        String[] questions = {
-            "What is the size of int in Java?",
-            "Which of the following is not a Java feature?",
-            "What is the default value of a boolean variable?"
-        };
-
-        String[][] options = {
-            {"1 byte", "2 bytes", "4 bytes", "8 bytes"},
-            {"Object-oriented", "Use of pointers", "Portable", "Dynamic"},
-            {"true", "false", "0", "1"}
-        };
-
-        int[] correctAnswers = {2, 1, 1}; // Index of correct answers
-
-        ButtonGroup[] buttonGroups = new ButtonGroup[questions.length];
-        JRadioButton[][] radioButtons = new JRadioButton[questions.length][4];
-
-        for (int i = 0; i < questions.length; i++) {
-            JLabel questionLabel = new JLabel((i + 1) + ". " + questions[i]);
-            questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-            questionsPanel.add(questionLabel);
-
-            buttonGroups[i] = new ButtonGroup();
-            JPanel optionsPanel = new JPanel();
-            optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
-
-            for (int j = 0; j < 4; j++) {
-                radioButtons[i][j] = new JRadioButton(options[i][j]);
-                buttonGroups[i].add(radioButtons[i][j]);
-                optionsPanel.add(radioButtons[i][j]);
-            }
-
-            questionsPanel.add(optionsPanel);
-        }
-
-        JButton submitButton = new JButton("Submit");
-        submitButton.setFocusPainted(false);
-        submitButton.setBackground(new Color(30, 144, 255)); // Set button color
-        submitButton.setForeground(Color.WHITE); // Set text color
-        submitButton.setFont(new Font("Arial", Font.BOLD, 12));
-        submitButton.setBorderPainted(false);
-        submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        submitButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                submitButton.setBackground(new Color(0, 120, 215)); // Change color on hover
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                submitButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
-            }
-        });
-        submitButton.addActionListener(e -> {
-            int score = 0;
-            for (int i = 0; i < questions.length; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (radioButtons[i][j].isSelected() && j == correctAnswers[i]) {
-                        score++;
-                    }
-                }
-            }
-            JOptionPane.showMessageDialog(this, "Your score: " + score + "/" + questions.length);
-            cardLayout.show(contentPanel, "Dashboard");
-        });
-
-        quizPanel.add(questionsPanel, BorderLayout.CENTER);
-        quizPanel.add(submitButton, BorderLayout.SOUTH);
-
-        return quizPanel;
     }
 
     public static void main(String[] args) {
