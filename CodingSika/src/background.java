@@ -25,7 +25,7 @@ public class background extends JFrame {
         sidebar.setLayout(null); // Absolute positioning for custom design
 
         // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikaInterior\\images\\profile.png");
+        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodingSika\\images\\profile.png");
         Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         JLabel userIcon = new JLabel(new CircularImageIcon(scaledImage));
         userIcon.setBounds(60, 30, 100, 100);
