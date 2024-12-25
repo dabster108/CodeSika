@@ -1,20 +1,20 @@
-package codesikainterior;
-
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class CodeSikaInterior extends JFrame {
+public class background extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel contentPanel;
     private JPanel sidebar;
     private JPanel indicatorPanel;
 
-    public CodeSikaInterior() {
+    public background() {
         // Frame Settings
         setTitle("Code Sika Dashboard");
-        setSize(1200, 700); // Adjusted size for the extra space to accommodate quizzes
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Open in full screen
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -25,9 +25,9 @@ public class CodeSikaInterior extends JFrame {
         sidebar.setLayout(null); // Absolute positioning for custom design
 
         // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\images\\manss.png");
+        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikaInterior\\images\\profile.png");
         Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        JLabel userIcon = new JLabel(new ImageIcon(scaledImage));
+        JLabel userIcon = new JLabel(new CircularImageIcon(scaledImage));
         userIcon.setBounds(60, 30, 100, 100);
         sidebar.add(userIcon);
 
@@ -67,7 +67,7 @@ public class CodeSikaInterior extends JFrame {
 
         // Profile Panel
         JPanel profilePanel = new JPanel();
-        profilePanel.setBackground(new Color(240, 240, 240));
+        profilePanel.setBackground(new Color(255, 255, 255));
         profilePanel.setLayout(new BorderLayout());
         JLabel profileLabel = new JLabel("Hello, Profile", SwingConstants.CENTER);
         profileLabel.setFont(new Font("Arial", Font.BOLD, 28));
@@ -76,7 +76,7 @@ public class CodeSikaInterior extends JFrame {
 
         // About Panel
         JPanel aboutPanel = new JPanel();
-        aboutPanel.setBackground(new Color(240, 240, 240));
+        aboutPanel.setBackground(new Color(255, 255, 255));
         aboutPanel.setLayout(new BorderLayout());
         JLabel aboutLabel = new JLabel("Hello, About", SwingConstants.CENTER);
         aboutLabel.setFont(new Font("Arial", Font.BOLD, 28));
@@ -108,6 +108,9 @@ public class CodeSikaInterior extends JFrame {
             cardLayout.show(contentPanel, "Courses");
             updateIndicatorPosition(coursesBtn);
         });
+
+        // Show the home panel by default
+        cardLayout.show(contentPanel, "Home");
 
         // Make the frame visible
         setVisible(true);
@@ -148,72 +151,137 @@ public class CodeSikaInterior extends JFrame {
     // Method to create the home panel
     private JPanel createHomePanel() {
         JPanel homePanel = new JPanel(new BorderLayout());
-        homePanel.setBackground(new Color(240, 240, 240));
+        homePanel.setBackground(new Color(255, 255, 255)); // Light mode background
         homePanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 2));
 
         // Title in the middle top
-        JLabel titleLabel = new JLabel("Code Sika", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Code Sika Dashboard", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titleLabel.setForeground(new Color(50, 50, 50));
+        titleLabel.setForeground(new Color(0, 0, 0)); // Black text
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add spacing
         homePanel.add(titleLabel, BorderLayout.NORTH);
 
         // Welcome message
         JLabel welcomeLabel = new JLabel("Welcome to the Code Sika Dashboard!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 22));
-        welcomeLabel.setForeground(new Color(50, 50, 50));
+        welcomeLabel.setForeground(new Color(0, 0, 0)); // Black text
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         homePanel.add(welcomeLabel, BorderLayout.CENTER);
 
-        // Progress Bars Panel
-        JPanel progressBarsPanel = createProgressBarsPanel();
-        homePanel.add(progressBarsPanel, BorderLayout.CENTER);
+        // Summary Panel
+        JPanel summaryPanel = createSummaryPanel();
+        homePanel.add(summaryPanel, BorderLayout.SOUTH);
 
-        // Placeholder for future additions
-        JPanel placeholderPanel = new JPanel();
-        placeholderPanel.setPreferredSize(new Dimension(300, 0));
-        placeholderPanel.setBackground(new Color(240, 240, 240));
-        homePanel.add(placeholderPanel, BorderLayout.EAST);
+        // Chatbot Panel
+        JPanel chatbotPanel = createChatbotPanel();
+        homePanel.add(chatbotPanel, BorderLayout.EAST);
 
         return homePanel;
     }
 
-    // Method to create the progress bars panel
-    private JPanel createProgressBarsPanel() {
-        JPanel progressBarsPanel = new JPanel();
-        progressBarsPanel.setLayout(new BoxLayout(progressBarsPanel, BoxLayout.Y_AXIS));
-        progressBarsPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        progressBarsPanel.setBackground(new Color(240, 240, 240));
+    // Method to create the summary panel
+    private JPanel createSummaryPanel() {
+        JPanel summaryPanel = new JPanel();
+        summaryPanel.setLayout(new GridLayout(1, 3, 10, 10));
+        summaryPanel.setBackground(new Color(255, 255, 255)); // Light mode background
+        summaryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Add progress bars for each course
-        progressBarsPanel.add(createCourseProgressBar("Python", 75));
-        progressBarsPanel.add(createCourseProgressBar("Java", 50));
-        progressBarsPanel.add(createCourseProgressBar("C++", 30));
-        progressBarsPanel.add(createCourseProgressBar("JavaScript", 90));
+        summaryPanel.add(createSummaryCard("Courses", "4", new Color(30, 144, 255)));
+        summaryPanel.add(createSummaryCard("Completed", "2", new Color(34, 139, 34)));
+        summaryPanel.add(createSummaryCard("In Progress", "2", new Color(255, 165, 0)));
 
-        return progressBarsPanel;
+        return summaryPanel;
     }
 
-    // Method to create a course progress bar
-    private JPanel createCourseProgressBar(String courseName, int progress) {
-        JPanel coursePanel = new JPanel(new BorderLayout());
-        coursePanel.setBorder(new EmptyBorder(10, 0, 10, 0));
-        coursePanel.setBackground(new Color(240, 240, 240));
+    // Method to create individual summary cards
+    private JPanel createSummaryCard(String title, String value, Color color) {
+        JPanel card = new JPanel(new BorderLayout());
+        card.setBackground(color); // Set background color
+        card.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        card.setPreferredSize(new Dimension(150, 100));
 
-        JLabel courseLabel = new JLabel(courseName);
-        courseLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        coursePanel.add(courseLabel, BorderLayout.WEST);
+        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setForeground(new Color(255, 255, 255)); // White text
+        card.add(titleLabel, BorderLayout.NORTH);
 
-        CustomProgressBar progressBar = new CustomProgressBar(progress);
-        coursePanel.add(progressBar, BorderLayout.CENTER);
+        JLabel valueLabel = new JLabel(value, SwingConstants.CENTER);
+        valueLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        valueLabel.setForeground(new Color(255, 255, 255)); // White text
+        card.add(valueLabel, BorderLayout.CENTER);
 
-        return coursePanel;
+        return card;
+    }
+
+    // Method to create the chatbot panel
+    private JPanel createChatbotPanel() {
+        JPanel chatbotPanel = new JPanel();
+        chatbotPanel.setPreferredSize(new Dimension(300, 400));
+        chatbotPanel.setBackground(new Color(255, 255, 255)); // Light background for chatbot panel
+        chatbotPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        chatbotPanel.setLayout(new BorderLayout());
+
+        JLabel chatbotTitle = new JLabel("AI Chatbot", SwingConstants.CENTER);
+        chatbotTitle.setFont(new Font("Arial", Font.BOLD, 20));
+        chatbotTitle.setForeground(new Color(0, 0, 0)); // Black text
+        chatbotTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        chatbotPanel.add(chatbotTitle, BorderLayout.NORTH);
+
+        JTextArea chatArea = new JTextArea();
+        chatArea.setEditable(false);
+        chatArea.setBackground(new Color(240, 240, 240));
+        chatArea.setForeground(new Color(0, 0, 0));
+        chatArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        JScrollPane chatScrollPane = new JScrollPane(chatArea);
+        chatbotPanel.add(chatScrollPane, BorderLayout.CENTER);
+
+        JPanel inputPanel = new JPanel(new BorderLayout());
+        inputPanel.setBackground(new Color(255, 255, 255));
+        JTextField inputField = new JTextField();
+        inputPanel.add(inputField, BorderLayout.CENTER);
+
+        JButton sendButton = new JButton("Send");
+        sendButton.setFocusPainted(false);
+        sendButton.setBackground(new Color(30, 144, 255)); // Set button color
+        sendButton.setForeground(Color.WHITE); // Set text color
+        sendButton.setFont(new Font("Arial", Font.BOLD, 12));
+        sendButton.setBorderPainted(false);
+        sendButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        sendButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                sendButton.setBackground(new Color(0, 120, 215)); // Change color on hover
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                sendButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
+            }
+        });
+        inputPanel.add(sendButton, BorderLayout.EAST);
+
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userInput = inputField.getText();
+                if (!userInput.isEmpty()) {
+                    chatArea.append("You: " + userInput + "\n");
+                    inputField.setText("");
+                    // Echo the user's input for now
+                    chatArea.append("Bot: " + userInput + " understood\n");
+                }
+            }
+        });
+
+        chatbotPanel.add(inputPanel, BorderLayout.SOUTH);
+
+        return chatbotPanel;
     }
 
     // Method to create the courses panel
     private JPanel createCoursesPanel() {
         JPanel coursesPanel = new JPanel();
-        coursesPanel.setBackground(new Color(240, 240, 240));
+        coursesPanel.setBackground(new Color(255, 255, 255));
         coursesPanel.setLayout(new BorderLayout());
 
         JLabel coursesTitle = new JLabel("Courses", SwingConstants.CENTER);
@@ -280,41 +348,21 @@ public class CodeSikaInterior extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new CodeSikaInterior());
+        SwingUtilities.invokeLater(() -> new background());
     }
 }
 
-// Custom progress bar class
-class CustomProgressBar extends JComponent {
-    private int progress;
-
-    public CustomProgressBar(int progress) {
-        this.progress = progress;
-        setPreferredSize(new Dimension(150, 20)); // Smaller width
+// Custom class to create a circular image icon
+class CircularImageIcon extends ImageIcon {
+    public CircularImageIcon(Image image) {
+        super(image);
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Background
-        g2d.setColor(new Color(200, 200, 200));
-        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-
-        // Progress
-        g2d.setColor(new Color(30, 144, 255));
-        int width = (int) (getWidth() * (progress / 100.0));
-        g2d.fillRoundRect(0, 0, width, getHeight(), 15, 15);
-
-        // Text
-        g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Arial", Font.BOLD, 14));
-        String text = progress + "%";
-        FontMetrics fm = g2d.getFontMetrics();
-        int textWidth = fm.stringWidth(text);
-        int textHeight = fm.getAscent();
-        g2d.drawString(text, (getWidth() - textWidth) / 2, (getHeight() + textHeight) / 2 - 3);
+    public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setClip(new Ellipse2D.Float(x, y, getIconWidth(), getIconHeight()));
+        super.paintIcon(c, g2d, x, y);
+        g2d.dispose();
     }
 }
