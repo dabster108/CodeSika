@@ -1,8 +1,14 @@
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.text.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class background extends JFrame {
 
@@ -10,6 +16,8 @@ public class background extends JFrame {
     private JPanel contentPanel;
     private JPanel sidebar;
     private JPanel indicatorPanel;
+    private JLabel pythonProgressLabel;
+    private JScrollPane pythonScrollPane;
 
     public background() {
         // Frame Settings
@@ -86,6 +94,14 @@ public class background extends JFrame {
         // Courses Panel
         JPanel coursesPanel = createCoursesPanel();
         contentPanel.add(coursesPanel, "Courses");
+
+        // Python Course Panel
+        JPanel pythonPanel = createPythonPanel();
+        contentPanel.add(pythonPanel, "Python");
+
+        // Quiz Panel
+        JPanel quizPanel = createQuizPanel();
+        contentPanel.add(quizPanel, "Quiz");
 
         // Add components to the frame
         add(sidebar, BorderLayout.WEST);
@@ -168,15 +184,33 @@ public class background extends JFrame {
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         homePanel.add(welcomeLabel, BorderLayout.CENTER);
 
-        // Summary Panel
-        JPanel summaryPanel = createSummaryPanel();
-        homePanel.add(summaryPanel, BorderLayout.SOUTH);
-
-        // Chatbot Panel
-        JPanel chatbotPanel = createChatbotPanel();
-        homePanel.add(chatbotPanel, BorderLayout.EAST);
+        // Course Progression Panel
+        JPanel courseProgressionPanel = createCourseProgressionPanel();
+        homePanel.add(courseProgressionPanel, BorderLayout.SOUTH);
 
         return homePanel;
+    }
+
+    // Method to create the course progression panel
+    private JPanel createCourseProgressionPanel() {
+        JPanel courseProgressionPanel = new JPanel();
+        courseProgressionPanel.setLayout(new BoxLayout(courseProgressionPanel, BoxLayout.Y_AXIS));
+        courseProgressionPanel.setBackground(new Color(255, 255, 255)); // Light mode background
+        courseProgressionPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel courseProgressionTitle = new JLabel("Course Progression", SwingConstants.CENTER);
+        courseProgressionTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        courseProgressionTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        courseProgressionPanel.add(courseProgressionTitle);
+
+        pythonProgressLabel = new JLabel("Python Progression: 0%", SwingConstants.CENTER);
+        pythonProgressLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        pythonProgressLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        courseProgressionPanel.add(pythonProgressLabel);
+
+        // Add more course progressions here as needed
+
+        return courseProgressionPanel;
     }
 
     // Method to create the summary panel
@@ -211,71 +245,6 @@ public class background extends JFrame {
         card.add(valueLabel, BorderLayout.CENTER);
 
         return card;
-    }
-
-    // Method to create the chatbot panel
-    private JPanel createChatbotPanel() {
-        JPanel chatbotPanel = new JPanel();
-        chatbotPanel.setPreferredSize(new Dimension(300, 400));
-        chatbotPanel.setBackground(new Color(255, 255, 255)); // Light background for chatbot panel
-        chatbotPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        chatbotPanel.setLayout(new BorderLayout());
-
-        JLabel chatbotTitle = new JLabel("AI Chatbot", SwingConstants.CENTER);
-        chatbotTitle.setFont(new Font("Arial", Font.BOLD, 20));
-        chatbotTitle.setForeground(new Color(0, 0, 0)); // Black text
-        chatbotTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        chatbotPanel.add(chatbotTitle, BorderLayout.NORTH);
-
-        JTextArea chatArea = new JTextArea();
-        chatArea.setEditable(false);
-        chatArea.setBackground(new Color(240, 240, 240));
-        chatArea.setForeground(new Color(0, 0, 0));
-        chatArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        JScrollPane chatScrollPane = new JScrollPane(chatArea);
-        chatbotPanel.add(chatScrollPane, BorderLayout.CENTER);
-
-        JPanel inputPanel = new JPanel(new BorderLayout());
-        inputPanel.setBackground(new Color(255, 255, 255));
-        JTextField inputField = new JTextField();
-        inputPanel.add(inputField, BorderLayout.CENTER);
-
-        JButton sendButton = new JButton("Send");
-        sendButton.setFocusPainted(false);
-        sendButton.setBackground(new Color(30, 144, 255)); // Set button color
-        sendButton.setForeground(Color.WHITE); // Set text color
-        sendButton.setFont(new Font("Arial", Font.BOLD, 12));
-        sendButton.setBorderPainted(false);
-        sendButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        sendButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                sendButton.setBackground(new Color(0, 120, 215)); // Change color on hover
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                sendButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
-            }
-        });
-        inputPanel.add(sendButton, BorderLayout.EAST);
-
-        sendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String userInput = inputField.getText();
-                if (!userInput.isEmpty()) {
-                    chatArea.append("You: " + userInput + "\n");
-                    inputField.setText("");
-                    // Echo the user's input for now
-                    chatArea.append("Bot: " + userInput + " understood\n");
-                }
-            }
-        });
-
-        chatbotPanel.add(inputPanel, BorderLayout.SOUTH);
-
-        return chatbotPanel;
     }
 
     // Method to create the courses panel
@@ -342,9 +311,102 @@ public class background extends JFrame {
                 learnMoreButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
             }
         });
+        learnMoreButton.addActionListener(e -> {
+            pythonScrollPane.getVerticalScrollBar().setValue(0); // Scroll to the top
+            cardLayout.show(contentPanel, "Python");
+            updateIndicatorPosition(learnMoreButton);
+        });
         panel.add(learnMoreButton, BorderLayout.SOUTH);
 
         return panel;
+    }
+
+    // Method to create the Python course panel
+    private JPanel createPythonPanel() {
+        JPanel pythonPanel = new JPanel(new BorderLayout());
+        pythonPanel.setBackground(new Color(255, 255, 255)); // Light mode background
+
+        JTextPane textPane = new JTextPane();
+        textPane.setEditable(false);
+        textPane.setContentType("text/html");
+        textPane.setFont(new Font("Arial", Font.PLAIN, 18)); // Increase text size
+        textPane.setMargin(new Insets(10, 10, 10, 10)); // Add left padding
+
+        StringBuilder content = new StringBuilder("<html><body style='font-family: Arial; font-size: 18px;'>");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\3108d\\Desktop\\CodeSika\\CodingSika\\notes\\python.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                for (int i = 1; i <= 17; i++) {
+                    line = line.replaceAll("\\b" + i + "\\b", "<b>" + i + "</b>");
+                }
+                content.append(line).append("<br>");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        content.append("</body></html>");
+        textPane.setText(content.toString());
+
+        pythonScrollPane = new JScrollPane(textPane);
+        pythonPanel.add(pythonScrollPane, BorderLayout.CENTER);
+
+        // Add Quiz Button
+        JButton quizButton = new JButton("Start Python Quiz");
+        quizButton.setFont(new Font("Arial", Font.BOLD, 16));
+        quizButton.setBackground(new Color(30, 144, 255));
+        quizButton.setForeground(Color.WHITE);
+        quizButton.setFocusPainted(false);
+        quizButton.setBorderPainted(false);
+        quizButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        quizButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                quizButton.setBackground(new Color(0, 120, 215)); // Change color on hover
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                quizButton.setBackground(new Color(30, 144, 255)); // Reset color when not hovered
+            }
+        });
+        quizButton.addActionListener(e -> {
+            cardLayout.show(contentPanel, "Quiz");
+            updateIndicatorPosition(quizButton);
+        });
+        pythonPanel.add(quizButton, BorderLayout.SOUTH);
+
+        // Add scroll listener to update progress
+        pythonScrollPane.getViewport().addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JViewport viewport = (JViewport) e.getSource();
+                int extentHeight = viewport.getExtentSize().height;
+                int viewHeight = viewport.getViewSize().height;
+                int viewPositionY = viewport.getViewPosition().y;
+
+                int progress = (int) ((viewPositionY + extentHeight) / (double) viewHeight * 100);
+                pythonProgressLabel.setText("Python Progression: " + progress + "%");
+            }
+        });
+
+        return pythonPanel;
+    }
+
+    // Method to create the Quiz panel
+    private JPanel createQuizPanel() {
+        JPanel quizPanel = new JPanel(new BorderLayout());
+        quizPanel.setBackground(new Color(255, 255, 255)); // Light mode background
+
+        JLabel quizTitle = new JLabel("Python Quiz", SwingConstants.CENTER);
+        quizTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        quizTitle.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        quizPanel.add(quizTitle, BorderLayout.NORTH);
+
+        // Add more quiz content here
+
+        return quizPanel;
     }
 
     public static void main(String[] args) {
