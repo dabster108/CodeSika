@@ -1,0 +1,15 @@
+# Gradle
+.gradle/
+
+# VS Code
+.vscode/
+
+# Binaries
+bin/
+
+# Build output
+build/
+
+.env
+
+idea.txt

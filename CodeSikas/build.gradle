@@ -1,0 +1,24 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // No need to include javax.swing as it is part of the JDK
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
+}
+
+application {
+    // Define the main class to run the application
+    mainClass.set("com.codesika.codesikaApp")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(22)) // Adjust the version to match your JDK
+    }
+}
