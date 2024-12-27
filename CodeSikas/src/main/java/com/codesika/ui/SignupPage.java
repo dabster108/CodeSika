@@ -18,7 +18,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import com.codesika.utils.Opendashboard;
 import com.codesika.utils.userAuth;
+
 
 public class SignupPage extends JFrame {
 
@@ -106,6 +108,23 @@ public class SignupPage extends JFrame {
         loginButton.setFont(new Font("Verdana", Font.BOLD, 16));
         loginButton.setFocusPainted(false);
         formPanel.add(loginButton);
+        loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+                userAuth userAuth = new userAuth();
+                if (userAuth.isUserExists(username)) {
+                    if (userAuth.verifyPassword(username, password)) {
+                        Opendashboard.opendashboard(username);
+                        dispose(); // Close the current window
+                    } else {
+                        JOptionPane.showMessageDialog(SignupPage.this, "Incorrect password.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(SignupPage.this, "User does not exist.");
+                }
+            }
+        });
 
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.setBounds(190, 280, 120, 40);
@@ -299,43 +318,127 @@ public class SignupPage extends JFrame {
         forgotPasswordWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         forgotPasswordWindow.setLocationRelativeTo(null);
         forgotPasswordWindow.setLayout(null);
-
-        // Favorite Programming Language
+    
+        JLabel usernameLabel = new JLabel("Username");
+        usernameLabel.setBounds(50, 10, 300, 20);
+        usernameLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+        usernameLabel.setForeground(new Color(34, 45, 65));
+        forgotPasswordWindow.add(usernameLabel);
+    
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(50, 40, 300, 30);
+        usernameField.setFont(new Font("Verdana", Font.PLAIN, 14));
+        usernameField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        forgotPasswordWindow.add(usernameField);
+    
         JLabel favLangLabel = new JLabel("What's your favorite programming language?");
-        favLangLabel.setBounds(50, 30, 300, 20);
+        favLangLabel.setBounds(50, 80, 300, 20);
         favLangLabel.setFont(new Font("Verdana", Font.BOLD, 12));
         favLangLabel.setForeground(new Color(34, 45, 65));
         forgotPasswordWindow.add(favLangLabel);
-
+    
         JTextField favLangField = new JTextField();
-        favLangField.setBounds(50, 60, 300, 30);
+        favLangField.setBounds(50, 110, 300, 30);
         favLangField.setFont(new Font("Verdana", Font.PLAIN, 14));
         favLangField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
         forgotPasswordWindow.add(favLangField);
-
+    
         JLabel favClassLabel = new JLabel("What's your favorite class?");
-        favClassLabel.setBounds(50, 100, 300, 20);
+        favClassLabel.setBounds(50, 150, 300, 20);
         favClassLabel.setFont(new Font("Verdana", Font.BOLD, 12));
         favClassLabel.setForeground(new Color(34, 45, 65));
         forgotPasswordWindow.add(favClassLabel);
-
+    
         JTextField favClassField = new JTextField();
-        favClassField.setBounds(50, 130, 300, 30);
+        favClassField.setBounds(50, 180, 300, 30);
         favClassField.setFont(new Font("Verdana", Font.PLAIN, 14));
         favClassField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
         forgotPasswordWindow.add(favClassField);
-
+    
         JButton submitButton = new JButton("Submit");
-        submitButton.setBounds(50, 180, 300, 40);
+        submitButton.setBounds(50, 220, 300, 40);
         submitButton.setBackground(new Color(34, 45, 65));
         submitButton.setForeground(new Color(255, 255, 255));
         submitButton.setFont(new Font("Verdana", Font.BOLD, 16));
         submitButton.setFocusPainted(false);
         forgotPasswordWindow.add(submitButton);
-
+    
+        submitButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String favLang = favLangField.getText();
+            String favClass = favClassField.getText();
+    
+            userAuth userAuth = new userAuth();
+            if (userAuth.verifySecurityQuestions(username, favLang, favClass)) {
+                forgotPasswordWindow.dispose();
+                openResetPasswordWindow(username);
+            } else {
+                JOptionPane.showMessageDialog(forgotPasswordWindow, "Security answers are incorrect.");
+            }
+        });
+    
         forgotPasswordWindow.setVisible(true);
     }
-
+    
+    private void openResetPasswordWindow(String username) {
+        JFrame resetPasswordWindow = new JFrame("Reset Password");
+        resetPasswordWindow.setSize(400, 250);
+        resetPasswordWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        resetPasswordWindow.setLocationRelativeTo(null);
+        resetPasswordWindow.setLayout(null);
+    
+        JLabel newPasswordLabel = new JLabel("New Password");
+        newPasswordLabel.setBounds(50, 30, 300, 20);
+        newPasswordLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+        newPasswordLabel.setForeground(new Color(34, 45, 65));
+        resetPasswordWindow.add(newPasswordLabel);
+    
+        JPasswordField newPasswordField = new JPasswordField();
+        newPasswordField.setBounds(50, 60, 300, 30);
+        newPasswordField.setFont(new Font("Verdana", Font.PLAIN, 14));
+        newPasswordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        resetPasswordWindow.add(newPasswordField);
+    
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password");
+        confirmPasswordLabel.setBounds(50, 100, 300, 20);
+        confirmPasswordLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+        confirmPasswordLabel.setForeground(new Color(34, 45, 65));
+        resetPasswordWindow.add(confirmPasswordLabel);
+    
+        JPasswordField confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setBounds(50, 130, 300, 30);
+        confirmPasswordField.setFont(new Font("Verdana", Font.PLAIN, 14));
+        confirmPasswordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+        resetPasswordWindow.add(confirmPasswordField);
+    
+        JButton resetButton = new JButton("Reset Password");
+        resetButton.setBounds(50, 170, 300, 40);
+        resetButton.setBackground(new Color(34, 45, 65));
+        resetButton.setForeground(new Color(255, 255, 255));
+        resetButton.setFont(new Font("Verdana", Font.BOLD, 16));
+        resetButton.setFocusPainted(false);
+        resetPasswordWindow.add(resetButton);
+    
+        resetButton.addActionListener(e -> {
+            String newPassword = new String(newPasswordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
+    
+            if (!newPassword.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(resetPasswordWindow, "Passwords do not match.");
+                return;
+            }
+    
+            userAuth userAuth = new userAuth();
+            if (userAuth.updatePassword(username, newPassword)) {
+                JOptionPane.showMessageDialog(resetPasswordWindow, "Password reset successfully!");
+                resetPasswordWindow.dispose();
+            } else {
+                JOptionPane.showMessageDialog(resetPasswordWindow, "Failed to reset password.");
+            }
+        });
+    
+        resetPasswordWindow.setVisible(true);
+    }
     private JLabel createLabel(String text, int x, int y) {
         JLabel label = new JLabel(text);
         label.setBounds(x, y, 300, 20);
@@ -344,6 +447,8 @@ public class SignupPage extends JFrame {
         return label;
     }
 
+    
+
     private JTextField createTextField(int x, int y) {
         JTextField textField = new JTextField();
         textField.setBounds(x, y, 300, 30);
@@ -351,6 +456,7 @@ public class SignupPage extends JFrame {
         textField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
         return textField;
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SignupPage::new);

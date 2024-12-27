@@ -33,6 +33,7 @@ import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+
 public class background extends JFrame {
 
     private CardLayout cardLayout;
@@ -43,7 +44,7 @@ public class background extends JFrame {
     private JLabel pythonProgressLabelHome; // Progress label for home panel
     private JScrollPane pythonScrollPane;
 
-    public background() {
+    public background(String username) {
         // Frame Settings
         setTitle("Code Sika Dashboard");
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Open in full screen
@@ -57,13 +58,13 @@ public class background extends JFrame {
         sidebar.setLayout(null); // Absolute positioning for custom design
 
         // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\Gradle\\app\\src\\images\\manss.png");
+        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\manss.png");
         Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         JLabel userIcon = new JLabel(new CircularImageIcon(scaledImage));
         userIcon.setBounds(60, 30, 100, 100);
         sidebar.add(userIcon);
 
-        JLabel usernameLabel = new JLabel("Hello, Dikshanta");
+        JLabel usernameLabel = new JLabel("Hello " + username);
         usernameLabel.setForeground(Color.WHITE);
         usernameLabel.setBounds(60, 140, 120, 20);
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 14));
@@ -343,11 +344,10 @@ public class background extends JFrame {
 
         StringBuilder content = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\3108d\\Desktop\\CodeSika\\Gradle\\app\\src\\n" + //
-                        "otes\\python.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\python.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                for (int i = 1  ; i <= 17; i++) {
+                for (int i = 1; i <= 17; i++) {
                     line = line.replaceAll("\\b" + i + "\\b", "<b>" + i + "</b>");
                 }
                 content.append(line).append("<br>");
@@ -422,7 +422,7 @@ public class background extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new background());
+        SwingUtilities.invokeLater(() -> new background("Default User"));
     }
 }
 

@@ -51,9 +51,66 @@ public class userAuth {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            System.err.println("Error inserting user into database.");
+            System.err.println("Error registering user in database.");
             e.printStackTrace();
-            return false;
         }
+
+        return false;
+    }
+
+    public boolean verifySecurityQuestions(String username, String favLang, String favClass) {
+        String verifySQL = "SELECT COUNT(*) FROM users WHERE username = ? AND programming_language = ? AND fav_class = ?";
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(verifySQL)) {
+
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, favLang);
+            preparedStatement.setString(3, favClass);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updatePassword(String username, String newPassword) {
+        String updateSQL = "UPDATE users SET pass = ? WHERE username = ?";
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateSQL)) {
+
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, username);
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean verifyPassword(String username, String password) {
+        String verifyPasswordSQL = "SELECT pass FROM users WHERE username = ?";
+
+        try (Connection connection = DatabaseHelper.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(verifyPasswordSQL)) {
+
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String storedPassword = resultSet.getString("pass");
+                return storedPassword.equals(password);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
