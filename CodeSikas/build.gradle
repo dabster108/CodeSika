@@ -9,6 +9,7 @@ repositories {
 dependencies {
     // No need to include javax.swing as it is part of the JDK
     implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.29' // Use the latest version
 
 }
 
