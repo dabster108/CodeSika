@@ -8,6 +8,7 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,7 +37,7 @@ public class SignupPage extends JFrame {
         leftPanel.setBackground(new Color(34, 45, 65));
         leftPanel.setLayout(new BorderLayout());
 
-        JLabel brandingLabel = new JLabel("Code Tutor");
+        JLabel brandingLabel = new JLabel("Bro Please Code");
         brandingLabel.setFont(new Font("Verdana", Font.BOLD, 28));
         brandingLabel.setForeground(new Color(255, 255, 255));
         brandingLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -237,6 +238,25 @@ public class SignupPage extends JFrame {
         passwordField.setFont(new Font("Verdana", Font.PLAIN, 14));
         passwordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
         newWindow.add(passwordField);
+
+        // Show/Hide Password Icon
+        JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
+        showPasswordCheckBox.setFont(new Font("Arial", Font.PLAIN, 14));
+        showPasswordCheckBox.setBounds(50, 310, 150, 30);
+        showPasswordCheckBox.setBackground(new Color(245, 245, 245));
+        showPasswordCheckBox.addActionListener(e -> {
+            if (showPasswordCheckBox.isSelected()) {
+                passwordField.setEchoChar((char) 0); // Show password
+            } else {
+                passwordField.setEchoChar('*'); // Hide password
+            }
+        });
+        newWindow.add(showPasswordCheckBox);
+
+
+
+
+
 
         JButton showHideButton = new JButton(new ImageIcon("eye_icon.png"));
         showHideButton.setBounds(360, 270, 30, 30);

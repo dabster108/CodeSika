@@ -17,16 +17,24 @@ public class AboutPage extends JPanel {
         setBackground(new Color(0, 0, 0)); // Same background color as home page
 
         // Title Label
-        JLabel aboutLabel = new JLabel("Welcome to About Page", SwingConstants.CENTER);
+        JLabel aboutLabel = new JLabel("About Page", SwingConstants.CENTER);
         aboutLabel.setFont(new Font("Poppins", Font.BOLD, 32));
         aboutLabel.setForeground(Color.WHITE);
         add(aboutLabel, BorderLayout.NORTH);
+
+        // Border Panel
+        JPanel borderPanel = new JPanel();
+        borderPanel.setBackground(new Color(0, 0, 0)); // Same background color as home page
+        borderPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        borderPanel.setLayout(new BorderLayout());
+        add(borderPanel, BorderLayout.CENTER);
 
         // Main Content Panel
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.setBackground(new Color(0, 0, 0)); // Same background color as home page
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        borderPanel.add(contentPanel, BorderLayout.CENTER);
 
         // Description Text
         JTextArea descriptionArea = new JTextArea(
@@ -60,7 +68,5 @@ public class AboutPage extends JPanel {
         featuresArea.setLineWrap(true);
         featuresArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         contentPanel.add(featuresArea, BorderLayout.CENTER);
-
-        add(contentPanel, BorderLayout.CENTER);
     }
 }

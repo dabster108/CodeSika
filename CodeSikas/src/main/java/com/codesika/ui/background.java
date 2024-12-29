@@ -13,11 +13,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,6 +29,7 @@ import javax.swing.SwingUtilities;
 
 import com.codesika.utils.AboutPage;
 import com.codesika.utils.CoursesPage;
+import com.codesika.utils.Profile;
 import com.codesika.utils.ProgressNotes;
 
 public class background extends JFrame {
@@ -114,7 +117,7 @@ public class background extends JFrame {
         contentPanel.add(homePanel, "Home");
 
         // Profile Panel
-        JPanel profilePanel = createProfilePanel();
+        Profile profilePanel = new Profile(username);
         contentPanel.add(profilePanel, "Profile");
 
         // About Panel
@@ -243,19 +246,35 @@ public class background extends JFrame {
         textPanel.add(descriptionArea, gbc);
 
         gbc.gridy++;
+        // Get Started Button
         JButton getStartedButton = new JButton("Get Started");
-        getStartedButton.setFont(new Font("Poppins", Font.PLAIN, 18));
-        getStartedButton.setForeground(Color.WHITE);
-        getStartedButton.setBackground(new Color(180, 128, 227));
-        getStartedButton.setFocusPainted(false);
-        getStartedButton.setBorder(BorderFactory.createEmptyBorder());
-        getStartedButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        getStartedButton.setBorder(BorderFactory.createLineBorder(new Color(180, 128, 227), 2, true)); // Curved borders
-        getStartedButton.addActionListener(e -> {
-            cardLayout.show(contentPanel, "Courses");
-            updateIndicatorPosition(getStartedButton);
-        });
-        textPanel.add(getStartedButton, gbc);
+getStartedButton.setFont(new Font("Poppins", Font.PLAIN, 18));
+getStartedButton.setForeground(Color.WHITE);
+getStartedButton.setBackground(new Color(180, 128, 227));
+getStartedButton.setFocusPainted(false);
+getStartedButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+getStartedButton.setContentAreaFilled(false);
+getStartedButton.setOpaque(true);
+getStartedButton.setBorder(BorderFactory.createCompoundBorder(
+    BorderFactory.createLineBorder(new Color(180, 128, 227), 2, true),
+    BorderFactory.createEmptyBorder(10, 20, 10, 20) // Padding for the text
+));
+getStartedButton.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(c.getBackground());
+        g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 30, 30); // Rounded edges
+        super.paint(g2, c);
+        g2.dispose();
+    }
+});
+getStartedButton.addActionListener(e -> {
+    cardLayout.show(contentPanel, "Courses");
+    updateIndicatorPosition(getStartedButton);
+});
+textPanel.add(getStartedButton, gbc);
 
         // Add course progression box
         gbc.gridy++;
