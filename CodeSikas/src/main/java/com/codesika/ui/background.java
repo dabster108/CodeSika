@@ -11,11 +11,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,7 +31,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import com.codesika.utils.AboutPage;
 import com.codesika.utils.CoursesPage;
 import com.codesika.utils.Profile;
 import com.codesika.utils.ProgressNotes;
@@ -48,70 +51,78 @@ public class background extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Set custom logo
+        try {
+            Image logo = ImageIO.read(new File("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\logo.png"));
+            setIconImage(logo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // Sidebar Navigation Panel
         sidebar = new JPanel();
-        sidebar.setBackground(new Color(30, 30, 30)); // Dark sidebar
+        sidebar.setBackground(Color.decode("#F9F7E7")); // Sidebar background color
         sidebar.setPreferredSize(new Dimension(220, 700));
         sidebar.setLayout(null); // Absolute positioning for custom design
 
         // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\manss.png");
+        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\mainsss.png");
         Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         JLabel userIcon = new JLabel(new CircularImageIcon(scaledImage));
         userIcon.setBounds(60, 30, 100, 100);
         sidebar.add(userIcon);
 
         JLabel usernameLabel = new JLabel("Hello " + username);
-        usernameLabel.setForeground(Color.WHITE);
+        usernameLabel.setForeground(Color.BLACK);
         usernameLabel.setBounds(60, 140, 120, 20);
-        usernameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        usernameLabel.setFont(new Font("Inter", Font.BOLD, 16));
         sidebar.add(usernameLabel);
 
         // Sidebar Buttons with Hover Animation
         JButton homeBtn = createSidebarButton("Home", 180);
         JButton profileBtn = createSidebarButton("Profile", 240);
-        JButton aboutBtn = createSidebarButton("About", 300);
-        JButton coursesBtn = createSidebarButton("Courses", 360);
+        JButton coursesBtn = createSidebarButton("Courses", 300);
 
         // Add buttons to the sidebar
         sidebar.add(homeBtn);
         sidebar.add(profileBtn);
-        sidebar.add(aboutBtn);
         sidebar.add(coursesBtn);
 
         // Light/Dark Theme Toggle Button (Functionality Removed)
         JButton themeToggleBtn = new JButton("Light/Dark");
-        themeToggleBtn.setBounds(20, 420, 180, 40); // Positioned above the logout button
+        themeToggleBtn.setBounds(20, 360, 180, 40); // Positioned above the logout button
         themeToggleBtn.setFocusPainted(false);
-        themeToggleBtn.setBackground(new Color(45, 45, 45));
-        themeToggleBtn.setForeground(Color.WHITE);
-        themeToggleBtn.setFont(new Font("Arial", Font.PLAIN, 16));
+        themeToggleBtn.setBackground(Color.decode("#D9D9D9"));
+        themeToggleBtn.setForeground(Color.BLACK);
+        themeToggleBtn.setFont(new Font("Inter", Font.PLAIN, 16));
         themeToggleBtn.setHorizontalAlignment(SwingConstants.LEFT);
         themeToggleBtn.setBorderPainted(false);
         sidebar.add(themeToggleBtn);
 
         // Logout Button
-        JButton logoutBtn = createSidebarButton("Logout", 480);
+        JButton logoutBtn = createSidebarButton("Logout", 420);
         sidebar.add(logoutBtn);
 
         // Indicator Panel
         indicatorPanel = new JPanel();
-        indicatorPanel.setBackground(new Color(255, 255, 255));
+        indicatorPanel.setBackground(Color.BLACK);
         indicatorPanel.setBounds(0, 180, 5, 40);
         sidebar.add(indicatorPanel);
 
         // Main Content Panel with CardLayout
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
-        contentPanel.setBackground(Color.BLACK); // Default background color
+        contentPanel.setBackground(Color.decode("#BBD2D1")); // Home page background color
 
         // Initialize progress labels
         pythonProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\python.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         pythonProgressLabelHome.setText(" Python Progression: 0%");
-        pythonProgressLabelHome.setForeground(Color.WHITE);
+        pythonProgressLabelHome.setForeground(Color.BLACK); // Set text color to black
+
         javaProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         javaProgressLabelHome.setText(" Java Progression: 0%");
-        javaProgressLabelHome.setForeground(Color.WHITE);
+        javaProgressLabelHome.setForeground(Color.BLACK); // Set text color to black
+
         // Home Panel
         JPanel homePanel = createHomePanel();
         contentPanel.add(homePanel, "Home");
@@ -119,10 +130,6 @@ public class background extends JFrame {
         // Profile Panel
         Profile profilePanel = new Profile(username);
         contentPanel.add(profilePanel, "Profile");
-
-        // About Panel
-        AboutPage aboutPanel = new AboutPage();
-        contentPanel.add(aboutPanel, "About");
 
         // Courses Panel
         CoursesPage coursesPanel = new CoursesPage(cardLayout, contentPanel, pythonProgressLabelHome, javaProgressLabelHome);
@@ -153,10 +160,6 @@ public class background extends JFrame {
             cardLayout.show(contentPanel, "Profile");
             updateIndicatorPosition(profileBtn);
         });
-        aboutBtn.addActionListener(e -> {
-            cardLayout.show(contentPanel, "About");
-            updateIndicatorPosition(aboutBtn);
-        });
         coursesBtn.addActionListener(e -> {
             cardLayout.show(contentPanel, "Courses");
             updateIndicatorPosition(coursesBtn);
@@ -178,9 +181,9 @@ public class background extends JFrame {
         JButton button = new JButton(text);
         button.setBounds(20, yPosition, 180, 40);
         button.setFocusPainted(false);
-        button.setBackground(new Color(45, 45, 45));
-        button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.PLAIN, 16));
+        button.setBackground(Color.decode("#D9D9D9"));
+        button.setForeground(Color.BLACK);
+        button.setFont(new Font("Inter", Font.PLAIN, 16));
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.setBorderPainted(false);
 
@@ -188,12 +191,14 @@ public class background extends JFrame {
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
-                button.setBackground(new Color(70, 70, 70)); // Change color on hover
+                button.setBackground(Color.BLACK); // Change color on hover
+                button.setForeground(Color.WHITE); // Change text color on hover
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent e) {
-                button.setBackground(new Color(45, 45, 45)); // Restore color
+                button.setBackground(Color.decode("#D9D9D9")); // Restore color
+                button.setForeground(Color.BLACK); // Restore text color
             }
         });
 
@@ -208,7 +213,7 @@ public class background extends JFrame {
     // Method to create the home panel
     private JPanel createHomePanel() {
         JPanel homePanel = new JPanel(new BorderLayout());
-        homePanel.setBackground(Color.BLACK); // Black background
+        homePanel.setBackground(Color.decode("#BBD2D1")); // Home page background color
 
         // Text overlay (for title, subtitle, description, and button)
         JPanel textPanel = new JPanel();
@@ -222,22 +227,22 @@ public class background extends JFrame {
         gbc.anchor = GridBagConstraints.NORTH; // Align to the top
 
         JLabel titleLabel = new JLabel("Welcome to CodeSika");
-        titleLabel.setFont(new Font("Poppins", Font.BOLD, 56));
-        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("Inter", Font.BOLD, 56));
+        titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         textPanel.add(titleLabel, gbc);
 
         gbc.gridy++;
         JLabel subTitleLabel = new JLabel("A Platform to Learn & Practice Code");
-        subTitleLabel.setFont(new Font("Poppins", Font.PLAIN, 24));
-        subTitleLabel.setForeground(Color.WHITE);
+        subTitleLabel.setFont(new Font("Inter", Font.PLAIN, 24));
+        subTitleLabel.setForeground(Color.BLACK);
         subTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         textPanel.add(subTitleLabel, gbc);
 
         gbc.gridy++;
         JTextArea descriptionArea = new JTextArea("CodeSika is your gateway to mastering coding skills. Whether you're a beginner or an experienced coder, we offer the tools and resources to enhance your knowledge and practice coding effectively.");
-        descriptionArea.setFont(new Font("Poppins", Font.PLAIN, 20));
-        descriptionArea.setForeground(Color.LIGHT_GRAY);
+        descriptionArea.setFont(new Font("Inter", Font.PLAIN, 20));
+        descriptionArea.setForeground(Color.BLACK);
         descriptionArea.setBackground(new Color(0, 0, 0, 0)); // Transparent background
         descriptionArea.setEditable(false);
         descriptionArea.setWrapStyleWord(true);
@@ -248,38 +253,49 @@ public class background extends JFrame {
         gbc.gridy++;
         // Get Started Button
         JButton getStartedButton = new JButton("Get Started");
-getStartedButton.setFont(new Font("Poppins", Font.PLAIN, 18));
-getStartedButton.setForeground(Color.WHITE);
-getStartedButton.setBackground(new Color(180, 128, 227));
-getStartedButton.setFocusPainted(false);
-getStartedButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-getStartedButton.setContentAreaFilled(false);
-getStartedButton.setOpaque(true);
-getStartedButton.setBorder(BorderFactory.createCompoundBorder(
-    BorderFactory.createLineBorder(new Color(180, 128, 227), 2, true),
-    BorderFactory.createEmptyBorder(10, 20, 10, 20) // Padding for the text
-));
-getStartedButton.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
-    @Override
-    public void paint(Graphics g, JComponent c) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(c.getBackground());
-        g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 30, 30); // Rounded edges
-        super.paint(g2, c);
-        g2.dispose();
-    }
-});
-getStartedButton.addActionListener(e -> {
-    cardLayout.show(contentPanel, "Courses");
-    updateIndicatorPosition(getStartedButton);
-});
-textPanel.add(getStartedButton, gbc);
+        getStartedButton.setFont(new Font("Inter", Font.PLAIN, 18));
+        getStartedButton.setForeground(Color.WHITE);
+        getStartedButton.setBackground(Color.decode("#2C4B72"));
+        getStartedButton.setFocusPainted(false);
+        getStartedButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        getStartedButton.setContentAreaFilled(false);
+        getStartedButton.setOpaque(true);
+        getStartedButton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.decode("#2C4B72"), 2, true),
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) // Padding for the text
+        ));
+        getStartedButton.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(c.getBackground());
+                g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 30, 30); // Rounded edges
+                super.paint(g2, c);
+                g2.dispose();
+            }
+        });
+        getStartedButton.addActionListener(e -> {
+            cardLayout.show(contentPanel, "Courses");
+            updateIndicatorPosition(getStartedButton);
+        });
+        textPanel.add(getStartedButton, gbc);
 
         // Add course progression box
         gbc.gridy++;
+        gbc.anchor = GridBagConstraints.NORTHEAST; // Align to the top right corner
+        gbc.weightx = 1.0; // Allow the component to take horizontal space
+        gbc.weighty = 1.0; // Allow the component to take vertical space
+
+        JPanel horizontalPanel = new JPanel(new GridLayout(1, 2, 30, 0));
+        horizontalPanel.setBackground(Color.decode("#BBD2D1")); // Match home page background color
+
         ProgressNotes progressNotes = new ProgressNotes(pythonProgressLabelHome, javaProgressLabelHome);
-        textPanel.add(progressNotes, gbc);
+        progressNotes.setBackground(Color.decode("#F9F7E7")); // Set course progression box background to #F9F7E7
+        progressNotes.setForeground(Color.BLACK); // Set text color to black
+
+        horizontalPanel.add(progressNotes);
+        textPanel.add(horizontalPanel, gbc);
 
         // Add everything to the home panel
         homePanel.add(textPanel, BorderLayout.NORTH);
@@ -292,8 +308,8 @@ textPanel.add(getStartedButton, gbc);
         JPanel profilePanel = new JPanel();
         profilePanel.setBackground(Color.BLACK); // Default to dark mode
         profilePanel.setLayout(new BorderLayout());
-        JLabel profileLabel = new JLabel("Hello, Profile", SwingConstants.CENTER);
-        profileLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        JLabel profileLabel = new JLabel("Hello !, Profile", SwingConstants.CENTER);
+        profileLabel.setFont(new Font("Inter", Font.BOLD, 32));
         profileLabel.setForeground(Color.WHITE); // Text color for dark mode
         profilePanel.add(profileLabel, BorderLayout.CENTER);
         return profilePanel;
@@ -305,7 +321,7 @@ textPanel.add(getStartedButton, gbc);
         quizPanel.setBackground(Color.BLACK); // Default to dark mode
 
         JLabel quizTitle = new JLabel("Python Quiz", SwingConstants.CENTER);
-        quizTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        quizTitle.setFont(new Font("Inter", Font.BOLD, 24));
         quizTitle.setForeground(Color.WHITE); // Text color for dark mode
         quizTitle.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         quizPanel.add(quizTitle, BorderLayout.NORTH);

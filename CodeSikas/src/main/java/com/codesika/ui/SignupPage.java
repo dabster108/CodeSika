@@ -4,7 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,6 +35,16 @@ public class SignupPage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
+
+        try {
+            Image logo = ImageIO.read(new File("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\logo.png"));
+            setIconImage(logo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        
 
         JPanel leftPanel = new JPanel();
         leftPanel.setBounds(0, 0, 450, 600);
