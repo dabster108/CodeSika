@@ -38,7 +38,7 @@ public class Profile extends JPanel {
             // User Details Panel
             JPanel userDetailsPanel = new JPanel();
             userDetailsPanel.setLayout(null);
-            userDetailsPanel.setBackground(new Color(45, 45, 45));
+            userDetailsPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
             userDetailsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Updated border color
             userDetailsPanel.setPreferredSize(new Dimension(800, 400));
             userDetailsPanel.setBounds(50, 100, 800, 400);
@@ -100,7 +100,7 @@ public class Profile extends JPanel {
 
             // Notes Panel
             JPanel notesPanel = new JPanel(new GridLayout(2, 2, 30, 30));
-            notesPanel.setBackground(new Color(45, 45, 45));
+            notesPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
             notesPanel.setBounds(420, 20, 800, 800);
             userDetailsPanel.add(notesPanel);
 
@@ -113,7 +113,7 @@ public class Profile extends JPanel {
             // Quiz Remarks Panel
             JPanel quizRemarksPanel = new JPanel();
             quizRemarksPanel.setLayout(new BorderLayout());
-            quizRemarksPanel.setBackground(new Color(45, 45, 45));
+            quizRemarksPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
             quizRemarksPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Updated border color
             quizRemarksPanel.setBounds(1240, 20, 400, 800);
             userDetailsPanel.add(quizRemarksPanel);
@@ -124,7 +124,7 @@ public class Profile extends JPanel {
             quizRemarksPanel.add(quizRemarksLabel, BorderLayout.NORTH);
 
             JPanel quizPanel = new JPanel(new GridLayout(4, 1, 10, 10));
-            quizPanel.setBackground(new Color(45, 45, 45));
+            quizPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
             quizRemarksPanel.add(quizPanel, BorderLayout.CENTER);
 
             addQuizSection(quizPanel, "Python Quiz");
@@ -143,7 +143,7 @@ public class Profile extends JPanel {
 
     private void addNotesSection(JPanel notesPanel, String courseName, String notesFilePath, String imagePath) {
         JPanel coursePanel = new JPanel(new BorderLayout());
-        coursePanel.setBackground(new Color(45, 45, 45)); // Inside background color
+        coursePanel.setBackground(Color.decode("#BBD2D1")); // Match background color
         coursePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Updated border color
         coursePanel.setPreferredSize(new Dimension(360, 180));
 
@@ -164,7 +164,7 @@ public class Profile extends JPanel {
         JTextArea notesArea = new JTextArea();
         notesArea.setFont(new Font("Inter", Font.PLAIN, 16)); // Updated font
         notesArea.setForeground(Color.BLACK); // Updated text color
-        notesArea.setBackground(new Color(45, 45, 45));
+        notesArea.setBackground(Color.decode("#BBD2D1")); // Match background color
         notesArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Updated border color
         notesArea.setEditable(false);
 
@@ -179,7 +179,7 @@ public class Profile extends JPanel {
 
     private void addQuizSection(JPanel quizPanel, String quizName) {
         JPanel quizBox = new JPanel(new BorderLayout());
-        quizBox.setBackground(new Color(45, 45, 45)); // Inside background color
+        quizBox.setBackground(Color.decode("#BBD2D1")); // Match background color
         quizBox.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Updated border color
         quizBox.setPreferredSize(new Dimension(360, 180));
 

@@ -1,3 +1,2 @@
-Java notesasdsad
-hellooooo
-Javac compile
+Java Notes
+Javac to compile 

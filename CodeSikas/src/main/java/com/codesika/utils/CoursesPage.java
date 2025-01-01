@@ -59,7 +59,7 @@ public class CoursesPage extends JPanel {
         JPanel coursesContentPanel = new JPanel();
         coursesContentPanel.setLayout(new BoxLayout(coursesContentPanel, BoxLayout.Y_AXIS));
         coursesContentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
+       
         // Add course panels
         coursesContentPanel.add(createCoursePanel("Python", "45 Videos"));
         coursesContentPanel.add(createCoursePanel("Java", "60 Videos"));
@@ -70,6 +70,10 @@ public class CoursesPage extends JPanel {
         add(coursesScrollPane, BorderLayout.CENTER);
     }
 
+
+
+
+
     // Method to create individual course panels
     private JPanel createCoursePanel(String title, String description) {
         JPanel panel = new JPanel();
@@ -77,6 +81,13 @@ public class CoursesPage extends JPanel {
         panel.setBackground(new Color(255, 248, 220));
         panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
         panel.setLayout(new BorderLayout());
+    
+
+
+
+    
+
+         
 
         // Add title
         JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
@@ -87,6 +98,8 @@ public class CoursesPage extends JPanel {
         JLabel descriptionLabel = new JLabel(description, SwingConstants.CENTER);
         descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         panel.add(descriptionLabel, BorderLayout.CENTER);
+
+    
 
         // Add "Learn More" button
         JButton learnMoreButton = new JButton("Learn More");
@@ -131,15 +144,15 @@ public class CoursesPage extends JPanel {
     public JPanel createPythonPanel() {
         JPanel pythonPanel = new JPanel(new BorderLayout());
         pythonPanel.setBackground(new Color(255, 255, 255)); // Light mode background
-
+    
         JTextPane textPane = new JTextPane();
         textPane.setEditable(false);
         textPane.setContentType("text/html");
-        textPane.setFont(new Font("Poppins", Font.PLAIN, 24)); // Set font to Poppins and size to 24
         textPane.setMargin(new Insets(10, 10, 10, 10)); // Add left padding
-
+    
         StringBuilder content = new StringBuilder();
-
+        content.append("<html><body style='font-family:Inter; font-size:28px;'>"); // Set font to Inter and size to 28
+    
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\python.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -151,9 +164,10 @@ public class CoursesPage extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    
+        content.append("</body></html>");
         textPane.setText(content.toString());
-
+    
         pythonScrollPane = new JScrollPane(textPane);
         pythonPanel.add(pythonScrollPane, BorderLayout.CENTER);
 
@@ -161,6 +175,12 @@ public class CoursesPage extends JPanel {
         pythonProgressLabel = new JLabel("Python Progression: 0%");
         pythonProgressLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         pythonPanel.add(pythonProgressLabel, BorderLayout.NORTH);
+
+        Quizzes quizzes = new Quizzes();
+        JPanel quizPanel = quizzes.createQuizPanel("Python");
+        pythonPanel.add(quizPanel, BorderLayout.SOUTH);
+    
+
 
         // Add Notes Section
         JPanel notesPanel = new JPanel(new BorderLayout());
@@ -245,6 +265,10 @@ public class CoursesPage extends JPanel {
         javaProgressLabel.setForeground(Color.LIGHT_GRAY); // Light gray text color
         javaPanel.add(javaProgressLabel, BorderLayout.NORTH);
 
+        Quizzes quizzes = new Quizzes();
+        JPanel quizPanel = quizzes.createQuizPanel("Java");
+        javaPanel.add(quizPanel, BorderLayout.SOUTH);
+
         // Add scroll listener to update progress
         javaScrollPane.getViewport().addChangeListener(e -> {
             JViewport viewport = (JViewport) e.getSource();
@@ -256,6 +280,12 @@ public class CoursesPage extends JPanel {
             javaProgressLabel.setText("Java Progression: " + progress + "%");
             javaProgressLabelHome.setText("Java Progression: " + progress + "%"); // Update home label
         });
+
+
+
+
+    
+
 
         // Add Notes Section
         JPanel notesPanel = new JPanel(new BorderLayout());

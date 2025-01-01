@@ -66,7 +66,7 @@ public class background extends JFrame {
         sidebar.setLayout(null); // Absolute positioning for custom design
 
         // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\mainsss.png");
+        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\manss.png");
         Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         JLabel userIcon = new JLabel(new CircularImageIcon(scaledImage));
         userIcon.setBounds(60, 30, 100, 100);
@@ -227,21 +227,23 @@ public class background extends JFrame {
         gbc.anchor = GridBagConstraints.NORTH; // Align to the top
 
         JLabel titleLabel = new JLabel("Welcome to CodeSika");
-        titleLabel.setFont(new Font("Inter", Font.BOLD, 56));
+        titleLabel.setFont(new Font("Inter", Font.BOLD, 59)); // Increased font size by 3
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         textPanel.add(titleLabel, gbc);
 
         gbc.gridy++;
         JLabel subTitleLabel = new JLabel("A Platform to Learn & Practice Code");
-        subTitleLabel.setFont(new Font("Inter", Font.PLAIN, 24));
+        subTitleLabel.setFont(new Font("Inter", Font.PLAIN, 27)); // Increased font size by 3
         subTitleLabel.setForeground(Color.BLACK);
         subTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         textPanel.add(subTitleLabel, gbc);
 
         gbc.gridy++;
+        gbc.anchor = GridBagConstraints.NORTHWEST; // Align to the top left
+        gbc.insets = new Insets(10, 50, 10, 10); // Add some space from the left
         JTextArea descriptionArea = new JTextArea("CodeSika is your gateway to mastering coding skills. Whether you're a beginner or an experienced coder, we offer the tools and resources to enhance your knowledge and practice coding effectively.");
-        descriptionArea.setFont(new Font("Inter", Font.PLAIN, 20));
+        descriptionArea.setFont(new Font("Inter", Font.PLAIN, 23)); // Increased font size by 3
         descriptionArea.setForeground(Color.BLACK);
         descriptionArea.setBackground(new Color(0, 0, 0, 0)); // Transparent background
         descriptionArea.setEditable(false);
@@ -251,9 +253,56 @@ public class background extends JFrame {
         textPanel.add(descriptionArea, gbc);
 
         gbc.gridy++;
+        JTextArea additionalTextArea = new JTextArea(
+            "At Code Sika, we empower you to learn, create, and innovate through coding. Whether you're just starting or looking to master new skills, we have resources tailored for you.\n\n" +
+            "Explore courses, practice coding, and build projects with our easy-to-use tools and resources. Start with beginner lessons and work your way to advanced topics in languages like Python, JavaScript, and more."
+        );
+        additionalTextArea.setFont(new Font("Inter", Font.PLAIN, 23)); // Increased font size by 3
+        additionalTextArea.setForeground(Color.BLACK);
+        additionalTextArea.setBackground(new Color(0, 0, 0, 0)); // Transparent background
+        additionalTextArea.setEditable(false);
+        additionalTextArea.setWrapStyleWord(true);
+        additionalTextArea.setLineWrap(true);
+        additionalTextArea.setPreferredSize(new Dimension(800, 200));
+        textPanel.add(additionalTextArea, gbc);
+
+        gbc.gridy++;
+        JTextArea whatYouCanDoTextArea = new JTextArea(
+            "What You Can Do on Code Sika:\n" +
+            "- Learn new programming languages\n" +
+            "- Track your progress with interactive modules\n" +
+            "- Participate in coding challenges\n" +
+            "- Build real-world projects\n" +
+            "- Earn certificates and showcase your skills"
+        );
+        whatYouCanDoTextArea.setFont(new Font("Inter", Font.PLAIN, 23)); // Increased font size by 3
+        whatYouCanDoTextArea.setForeground(Color.BLACK);
+        whatYouCanDoTextArea.setBackground(new Color(0, 0, 0, 0)); // Transparent background
+        whatYouCanDoTextArea.setEditable(false);
+        whatYouCanDoTextArea.setWrapStyleWord(true);
+        whatYouCanDoTextArea.setLineWrap(true);
+        whatYouCanDoTextArea.setPreferredSize(new Dimension(800, 150));
+        textPanel.add(whatYouCanDoTextArea, gbc);
+
+        gbc.gridy++;
+        JPanel readyPanel = new JPanel(new GridBagLayout());
+        readyPanel.setOpaque(false); // Make it transparent to show the background
+        GridBagConstraints readyGbc = new GridBagConstraints();
+        readyGbc.insets = new Insets(10, 10, 10, 10);
+        readyGbc.gridx = 0;
+        readyGbc.gridy = 0;
+        readyGbc.anchor = GridBagConstraints.WEST;
+
+        JLabel readyLabel = new JLabel("Ready to code? Start your first course today!");
+        readyLabel.setFont(new Font("Inter", Font.PLAIN, 23)); // Increased font size by 3
+        readyLabel.setForeground(Color.BLACK);
+        readyLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        readyPanel.add(readyLabel, readyGbc);
+
+        readyGbc.gridx++;
         // Get Started Button
         JButton getStartedButton = new JButton("Get Started");
-        getStartedButton.setFont(new Font("Inter", Font.PLAIN, 18));
+        getStartedButton.setFont(new Font("Inter", Font.PLAIN, 21)); // Increased font size by 3
         getStartedButton.setForeground(Color.WHITE);
         getStartedButton.setBackground(Color.decode("#2C4B72"));
         getStartedButton.setFocusPainted(false);
@@ -279,16 +328,24 @@ public class background extends JFrame {
             cardLayout.show(contentPanel, "Courses");
             updateIndicatorPosition(getStartedButton);
         });
-        textPanel.add(getStartedButton, gbc);
+        readyPanel.add(getStartedButton, readyGbc);
+
+        gbc.gridy++;
+        textPanel.add(readyPanel, gbc);
 
         // Add course progression box
-        gbc.gridy++;
-        gbc.anchor = GridBagConstraints.NORTHEAST; // Align to the top right corner
+        gbc.gridy = 0;
+        gbc.gridx = 1;
+        gbc.gridheight = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 20, 0, 0); // Add some space to the left
         gbc.weightx = 1.0; // Allow the component to take horizontal space
         gbc.weighty = 1.0; // Allow the component to take vertical space
 
-        JPanel horizontalPanel = new JPanel(new GridLayout(1, 2, 30, 0));
+        
+        JPanel horizontalPanel = new JPanel(new GridLayout(1, 1, 30, 0));
         horizontalPanel.setBackground(Color.decode("#BBD2D1")); // Match home page background color
+        horizontalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add border to the progression box
 
         ProgressNotes progressNotes = new ProgressNotes(pythonProgressLabelHome, javaProgressLabelHome);
         progressNotes.setBackground(Color.decode("#F9F7E7")); // Set course progression box background to #F9F7E7
@@ -298,7 +355,7 @@ public class background extends JFrame {
         textPanel.add(horizontalPanel, gbc);
 
         // Add everything to the home panel
-        homePanel.add(textPanel, BorderLayout.NORTH);
+        homePanel.add(textPanel, BorderLayout.CENTER);
 
         return homePanel;
     }
