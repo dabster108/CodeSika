@@ -151,7 +151,7 @@ public class CoursesPage extends JPanel {
         textPane.setMargin(new Insets(10, 10, 10, 10)); // Add left padding
     
         StringBuilder content = new StringBuilder();
-        content.append("<html><body style='font-family:Inter; font-size:28px;'>"); // Set font to Inter and size to 28
+        content.append("<html><body style='font-family:Inter; font-size:20px;'>"); // Set font to Inter and size to 28
     
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\python.txt"))) {
             String line;
@@ -172,9 +172,11 @@ public class CoursesPage extends JPanel {
         pythonPanel.add(pythonScrollPane, BorderLayout.CENTER);
 
         // Initialize pythonProgressLabel
-        pythonProgressLabel = new JLabel("Python Progression: 0%");
-        pythonProgressLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        pythonPanel.add(pythonProgressLabel, BorderLayout.NORTH);
+       // Initialize pythonProgressLabel
+    pythonProgressLabel = new JLabel("Python Progression: 0%");
+    pythonProgressLabel.setFont(new Font("Inter", Font.BOLD, 18)); // Set font to bold
+    pythonProgressLabel.setForeground(Color.BLACK); // Set text color to black
+    pythonPanel.add(pythonProgressLabel, BorderLayout.NORTH);
 
         Quizzes quizzes = new Quizzes();
         JPanel quizPanel = quizzes.createQuizPanel("Python");
@@ -237,10 +239,10 @@ public class CoursesPage extends JPanel {
         JTextPane textPane = new JTextPane();
         textPane.setEditable(false);
         textPane.setContentType("text/html");
-        textPane.setFont(new Font("Poppins", Font.PLAIN, 32)); // Set font to Poppins and size to 32
         textPane.setMargin(new Insets(10, 10, 10, 10)); // Add left padding
 
         StringBuilder content = new StringBuilder();
+        content.append("<html><body style='font-family:Inter; font-size:24px;'>"); // Set font to Inter and size to 28
 
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\java.txt"))) {
             String line;
@@ -254,6 +256,7 @@ public class CoursesPage extends JPanel {
             e.printStackTrace();
         }
 
+        content.append("</body></html>");
         textPane.setText(content.toString());
 
         javaScrollPane = new JScrollPane(textPane);
@@ -261,8 +264,8 @@ public class CoursesPage extends JPanel {
 
         // Initialize javaProgressLabel
         javaProgressLabel = new JLabel("Java Progression: 0%");
-        javaProgressLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        javaProgressLabel.setForeground(Color.LIGHT_GRAY); // Light gray text color
+        javaProgressLabel.setFont(new Font("Inter", Font.BOLD, 18));
+        javaProgressLabel.setForeground(Color.black); // Light gray text color
         javaPanel.add(javaProgressLabel, BorderLayout.NORTH);
 
         Quizzes quizzes = new Quizzes();
@@ -281,12 +284,6 @@ public class CoursesPage extends JPanel {
             javaProgressLabelHome.setText("Java Progression: " + progress + "%"); // Update home label
         });
 
-
-
-
-    
-
-
         // Add Notes Section
         JPanel notesPanel = new JPanel(new BorderLayout());
         notesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "NOTES", 0, 0, new Font("Arial", Font.BOLD, 18)));
@@ -304,7 +301,7 @@ public class CoursesPage extends JPanel {
         saveButton.setBackground(new Color(30, 144, 255));
         saveButton.setForeground(Color.WHITE);
         saveButton.setFocusPainted(false);
-        saveButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        saveButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         saveButton.addActionListener(e -> {
             try (FileWriter writer = new FileWriter("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\java_notes.txt", true)) {
                 writer.write(notesArea.getText() + "\n");
@@ -321,6 +318,7 @@ public class CoursesPage extends JPanel {
 
         return javaPanel;
     }
+    
 
     // Method to create the C++ course panel
     public JPanel createCppPanel() {

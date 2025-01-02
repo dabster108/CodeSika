@@ -47,74 +47,75 @@ public class SignupPage extends JFrame {
         
 
         JPanel leftPanel = new JPanel();
-        leftPanel.setBounds(0, 0, 450, 600);
-        leftPanel.setBackground(new Color(34, 45, 65));
-        leftPanel.setLayout(new BorderLayout());
+leftPanel.setBounds(0, 0, 450, 600);
+leftPanel.setBackground(Color.BLACK);
+leftPanel.setLayout(new BorderLayout());
 
-        JLabel brandingLabel = new JLabel("Bro Please Code");
-        brandingLabel.setFont(new Font("Verdana", Font.BOLD, 28));
-        brandingLabel.setForeground(new Color(255, 255, 255));
-        brandingLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        brandingLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-        leftPanel.add(brandingLabel, BorderLayout.NORTH);
+// Add image to the top left corner
+ImageIcon originalIcon = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\logo.png"); // Replace with the actual path to your image
+Image originalImage = originalIcon.getImage();
+Image scaledImage = originalImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // Resize the image to 50x50
+ImageIcon scaledIcon = new ImageIcon(scaledImage);
+JLabel imageLabel = new JLabel(scaledIcon);
+imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
+imageLabel.setVerticalAlignment(SwingConstants.TOP);
+leftPanel.add(imageLabel, BorderLayout.NORTH);
 
-        JPanel formPanel = new JPanel();
-        formPanel.setBounds(450, 0, 450, 600);
-        formPanel.setLayout(null);
-        formPanel.setBackground(new Color(245, 245, 245));
+JPanel formPanel = new JPanel();
+formPanel.setBounds(450, 0, 450, 600);
+formPanel.setLayout(null);
+formPanel.setBackground(Color.decode("#F9F7E7")); // Set background color to #F9F7E7
 
-        JLabel animatedLabel = new JLabel();
-        animatedLabel.setFont(new Font("Verdana", Font.BOLD, 24));
-        animatedLabel.setForeground(new Color(34, 45, 65));
-        animatedLabel.setBounds(50, 30, 400, 30);
-        formPanel.add(animatedLabel);
+JLabel animatedLabel = new JLabel();
+animatedLabel.setFont(new Font("Verdana", Font.BOLD, 24));
+animatedLabel.setForeground(new Color(34, 45, 65));
+animatedLabel.setBounds(50, 30, 400, 30);
+formPanel.add(animatedLabel);
 
-        animateText(animatedLabel);
+animateText(animatedLabel);
 
-        JLabel usernameLabel = createLabel("USERNAME", 50, 80);
-        formPanel.add(usernameLabel);
+JLabel usernameLabel = createLabel("USERNAME", 50, 80);
+formPanel.add(usernameLabel);
 
-        JTextField usernameField = createTextField(50, 110);
-        formPanel.add(usernameField);
+JTextField usernameField = createTextField(50, 110);
+formPanel.add(usernameField);
 
-        JLabel passwordLabel = createLabel("PASSWORD", 50, 160);
-        formPanel.add(passwordLabel);
+JLabel passwordLabel = createLabel("PASSWORD", 50, 160);
+formPanel.add(passwordLabel);
 
-        JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(50, 190, 300, 30);
-        passwordField.setFont(new Font("Verdana", Font.PLAIN, 14));
-        passwordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
-        formPanel.add(passwordField);
+JPasswordField passwordField = new JPasswordField();
+passwordField.setBounds(50, 190, 300, 30);
+passwordField.setFont(new Font("Verdana", Font.PLAIN, 14));
+passwordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
+formPanel.add(passwordField);
 
-        // Show/Hide Password Icon
-        JButton showHideButton = new JButton(new ImageIcon("eye_icon.png"));
-        showHideButton.setBounds(360, 190, 30, 30);
-        showHideButton.setFocusPainted(false);
-        showHideButton.setContentAreaFilled(false);
-        showHideButton.setBorderPainted(false);
-        showHideButton.addActionListener(e -> {
-            if (passwordField.getEchoChar() == '*') {
-                passwordField.setEchoChar((char) 0);
-                showHideButton.setIcon(new ImageIcon("eye_closed_icon.png"));
-            } else {
-                passwordField.setEchoChar('*');
-                showHideButton.setIcon(new ImageIcon("eye_icon.png"));
-            }
-        });
-        formPanel.add(showHideButton);
+// Show Password Checkbox positioned at the right corner on the same line
+JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
+showPasswordCheckBox.setFont(new Font("Arial", Font.PLAIN, 14));
+showPasswordCheckBox.setBounds(230, 230, 150, 30);  // Positioned on the right
+showPasswordCheckBox.setBackground(Color.decode("#F9F7E7"));
+showPasswordCheckBox.addActionListener(e -> {
+    if (showPasswordCheckBox.isSelected()) {
+        passwordField.setEchoChar((char) 0); // Show password
+    } else {
+        passwordField.setEchoChar('*'); // Hide password
+    }
+});
+formPanel.add(showPasswordCheckBox);
 
-        // Forgot Password Link
-        JLabel forgotPasswordLabel = new JLabel("<HTML><U>Forgot Password?</U></HTML>");
-        forgotPasswordLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
-        forgotPasswordLabel.setForeground(new Color(34, 45, 65));
-        forgotPasswordLabel.setBounds(50, 230, 120, 20);
-        forgotPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        forgotPasswordLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                openForgotPasswordWindow();
-            }
-        });
-        formPanel.add(forgotPasswordLabel);
+// Forgot Password Link positioned on the left
+JLabel forgotPasswordLabel = new JLabel("<HTML><U>Forgot Password?</U></HTML>");
+forgotPasswordLabel.setFont(new Font("Verdana", Font.PLAIN, 12));
+forgotPasswordLabel.setForeground(new Color(34, 45, 65));
+forgotPasswordLabel.setBounds(50, 230, 120, 20);  // Positioned on the left
+forgotPasswordLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+forgotPasswordLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+        openForgotPasswordWindow();
+    }
+});
+formPanel.add(forgotPasswordLabel);
+
 
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(50, 280, 120, 40);
@@ -254,18 +255,18 @@ public class SignupPage extends JFrame {
         newWindow.add(passwordField);
 
         // Show/Hide Password Icon
-        JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
-        showPasswordCheckBox.setFont(new Font("Arial", Font.PLAIN, 14));
-        showPasswordCheckBox.setBounds(50, 310, 150, 30);
-        showPasswordCheckBox.setBackground(new Color(245, 245, 245));
-        showPasswordCheckBox.addActionListener(e -> {
-            if (showPasswordCheckBox.isSelected()) {
-                passwordField.setEchoChar((char) 0); // Show password
-            } else {
-                passwordField.setEchoChar('*'); // Hide password
-            }
-        });
-        newWindow.add(showPasswordCheckBox);
+        // JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
+        // showPasswordCheckBox.setFont(new Font("Arial", Font.PLAIN, 14));
+        // showPasswordCheckBox.setBounds(50, 310, 150, 30);
+        // showPasswordCheckBox.setBackground(new Color(245, 245, 245));
+        // showPasswordCheckBox.addActionListener(e -> {
+        //     if (showPasswordCheckBox.isSelected()) {
+        //         passwordField.setEchoChar((char) 0); // Show password
+        //     } else {
+        //         passwordField.setEchoChar('*'); // Hide password
+        //     }
+        // });
+        // newWindow.add(showPasswordCheckBox);
 
 
 

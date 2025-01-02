@@ -11,6 +11,8 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33'
     implementation 'org.apache.pdfbox:pdfbox:2.0.29' // Use the latest version
     implementation 'org.json:json:20210307' // JSON dependency
+    implementation 'org.openjfx:javafx-controls:19'
+    implementation 'org.openjfx:javafx-media:19' // For video media functionality
 }
 
 application {
