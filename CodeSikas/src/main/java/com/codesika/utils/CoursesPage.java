@@ -38,16 +38,32 @@ public class CoursesPage extends JPanel {
     private JLabel jsProgressLabel; // Declare jsProgressLabel
     private JLabel pythonProgressLabelHome;
     private JLabel javaProgressLabelHome;
+    private JLabel cppProgressLabelHome; // Progress label for C++ on home panel
+    private JLabel jsProgressLabelHome;  // Progress label for JavaScript on home panel
 
-    public CoursesPage(CardLayout cardLayout, JPanel contentPanel, JLabel pythonProgressLabelHome, JLabel javaProgressLabelHome) {
+    public CoursesPage(CardLayout cardLayout, JPanel contentPanel, JLabel pythonProgressLabelHome, JLabel javaProgressLabelHome, JLabel cppProgressLabelHome, JLabel jsProgressLabelHome) {
         this.cardLayout = cardLayout;
         this.contentPanel = contentPanel;
         this.pythonProgressLabelHome = pythonProgressLabelHome;
         this.javaProgressLabelHome = javaProgressLabelHome;
+        this.cppProgressLabelHome = cppProgressLabelHome;
+        this.jsProgressLabelHome = jsProgressLabelHome;
+
+        // Initialize the Python panel and its scroll pane
+        JPanel pythonPanel = createPythonPanel();
+        contentPanel.add(pythonPanel, "Python");
+
+        // Initialize the Java panel and its scroll pane
+        JPanel javaPanel = createJavaPanel();
+        contentPanel.add(javaPanel, "Java");
 
         // Initialize the C++ panel and its scroll pane
-        JPanel cppPanel = createCppPanel(); // Create the C++ panel
-        contentPanel.add(cppPanel, "cppPanel"); // Add the C++ panel to the contentPanel with a unique name
+        JPanel cppPanel = createCppPanel();
+        contentPanel.add(cppPanel, "cppPanel");
+
+        // Initialize the JavaScript panel and its scroll pane
+        JPanel jsPanel = createJavaScriptPanel();
+        contentPanel.add(jsPanel, "JavaScript");
 
         setLayout(new BorderLayout());
         setBackground(Color.BLACK); // Set background color to black
@@ -120,9 +136,11 @@ public class CoursesPage extends JPanel {
                 if (cppScrollPane != null) {
                     cppScrollPane.getVerticalScrollBar().setValue(0); // Scroll to the top
                 }
-                cardLayout.show(contentPanel, "cppPanel"); // Show the C++ panel
+                cardLayout.show(contentPanel, "cppPanel");
             } else if (title.equals("JavaScript")) {
-                jsScrollPane.getVerticalScrollBar().setValue(0); // Scroll to the top
+                if (jsScrollPane != null) {
+                    jsScrollPane.getVerticalScrollBar().setValue(0); // Scroll to the top
+                }
                 cardLayout.show(contentPanel, "JavaScript");
             }
         });
@@ -351,7 +369,40 @@ public class CoursesPage extends JPanel {
 
             int progress = (int) ((viewPositionY + extentHeight) / (double) viewHeight * 100);
             cppProgressLabel.setText("C++ Progression: " + progress + "%");
+            cppProgressLabelHome.setText("C++ Progression: " + progress + "%"); // Update home label
         });
+
+        // Add Notes Section
+        JPanel notesPanel = new JPanel(new BorderLayout());
+        notesPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "NOTES", 0, 0, new Font("Arial", Font.BOLD, 18)));
+        notesPanel.setPreferredSize(new Dimension(400, 200));
+
+        JTextArea notesArea = new JTextArea();
+        notesArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        notesArea.setLineWrap(true);
+        notesArea.setWrapStyleWord(true);
+        JScrollPane notesScrollPane = new JScrollPane(notesArea);
+        notesPanel.add(notesScrollPane, BorderLayout.CENTER);
+
+        JButton saveButton = new JButton("Save");
+        saveButton.setFont(new Font("Arial", Font.BOLD, 14));
+        saveButton.setBackground(new Color(30, 144, 255));
+        saveButton.setForeground(Color.WHITE);
+        saveButton.setFocusPainted(false);
+        saveButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        saveButton.addActionListener(e -> {
+            try (FileWriter writer = new FileWriter("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\cpp_notes.txt", true)) {
+                writer.write(notesArea.getText() + "\n");
+                notesArea.setText("");
+                JOptionPane.showMessageDialog(this, "Note saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to save note.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        notesPanel.add(saveButton, BorderLayout.SOUTH);
+
+        cppPanel.add(notesPanel, BorderLayout.EAST);
 
         return cppPanel;
     }
@@ -368,6 +419,7 @@ public class CoursesPage extends JPanel {
         textPane.setMargin(new Insets(10, 10, 10, 10)); // Add left padding
 
         StringBuilder content = new StringBuilder();
+        content.append("<html><body style='font-family:Poppins; font-size:24px;'>"); // Set font to Poppins and size to 24
 
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\javascript.txt"))) {
             String line;
@@ -381,6 +433,7 @@ public class CoursesPage extends JPanel {
             e.printStackTrace();
         }
 
+        content.append("</body></html>");
         textPane.setText(content.toString());
 
         jsScrollPane = new JScrollPane(textPane);
@@ -388,8 +441,21 @@ public class CoursesPage extends JPanel {
 
         // Initialize jsProgressLabel
         jsProgressLabel = new JLabel("JavaScript Progression: 0%");
-        jsProgressLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        jsProgressLabel.setFont(new Font("Inter", Font.BOLD, 18));
+        jsProgressLabel.setForeground(Color.BLACK); // Set text color to black
         jsPanel.add(jsProgressLabel, BorderLayout.NORTH);
+
+        // Add scroll listener to update progress
+        jsScrollPane.getViewport().addChangeListener(e -> {
+            JViewport viewport = (JViewport) e.getSource();
+            int extentHeight = viewport.getExtentSize().height;
+            int viewHeight = viewport.getViewSize().height;
+            int viewPositionY = viewport.getViewPosition().y;
+
+            int progress = (int) ((viewPositionY + extentHeight) / (double) viewHeight * 100);
+            jsProgressLabel.setText("JavaScript Progression: " + progress + "%");
+            jsProgressLabelHome.setText("JavaScript Progression: " + progress + "%"); // Update home label
+        });
 
         // Add Notes Section
         JPanel notesPanel = new JPanel(new BorderLayout());
@@ -422,17 +488,6 @@ public class CoursesPage extends JPanel {
         notesPanel.add(saveButton, BorderLayout.SOUTH);
 
         jsPanel.add(notesPanel, BorderLayout.EAST);
-
-        // Add scroll listener to update progress
-        jsScrollPane.getViewport().addChangeListener(e -> {
-            JViewport viewport = (JViewport) e.getSource();
-            int extentHeight = viewport.getExtentSize().height;
-            int viewHeight = viewport.getViewSize().height;
-            int viewPositionY = viewport.getViewPosition().y;
-
-            int progress = (int) ((viewPositionY + extentHeight) / (double) viewHeight * 100);
-            jsProgressLabel.setText("JavaScript Progression: " + progress + "%");
-        });
 
         return jsPanel;
     }

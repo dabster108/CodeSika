@@ -43,6 +43,9 @@ public class background extends JFrame {
     private JPanel indicatorPanel;
     private JLabel pythonProgressLabelHome; // Progress label for home panel
     private JLabel javaProgressLabelHome; // Progress label for home panel
+    private JLabel cppProgressLabelHome; // Progress label for C++ on home panel
+    private JLabel jsProgressLabelHome;  // Progress label for JavaScript on home panel
+    private boolean isDarkMode = false; // Track dark mode state
 
     public background(String username) {
         // Frame Settings
@@ -88,7 +91,7 @@ public class background extends JFrame {
         sidebar.add(profileBtn);
         sidebar.add(coursesBtn);
 
-        // Light/Dark Theme Toggle Button (Functionality Removed)
+        // Light/Dark Theme Toggle Button
         JButton themeToggleBtn = new JButton("Light/Dark");
         themeToggleBtn.setBounds(20, 360, 180, 40); // Positioned above the logout button
         themeToggleBtn.setFocusPainted(false);
@@ -97,6 +100,9 @@ public class background extends JFrame {
         themeToggleBtn.setFont(new Font("Inter", Font.PLAIN, 16));
         themeToggleBtn.setHorizontalAlignment(SwingConstants.LEFT);
         themeToggleBtn.setBorderPainted(false);
+
+        // Add action listener for theme toggle button
+        themeToggleBtn.addActionListener(e -> toggleDarkMode());
         sidebar.add(themeToggleBtn);
 
         // Logout Button
@@ -117,11 +123,19 @@ public class background extends JFrame {
         // Initialize progress labels
         pythonProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\python.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         pythonProgressLabelHome.setText(" Python Progression: 0%");
-        pythonProgressLabelHome.setForeground(Color.BLACK); // Set text color to black
+        pythonProgressLabelHome.setForeground(Color.BLACK);
 
         javaProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         javaProgressLabelHome.setText(" Java Progression: 0%");
-        javaProgressLabelHome.setForeground(Color.BLACK); // Set text color to black
+        javaProgressLabelHome.setForeground(Color.BLACK);
+
+        cppProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\cpp.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+        cppProgressLabelHome.setText(" C++ Progression: 0%");
+        cppProgressLabelHome.setForeground(Color.BLACK);
+
+        jsProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\js.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+        jsProgressLabelHome.setText(" JavaScript Progression: 0%");
+        jsProgressLabelHome.setForeground(Color.BLACK);
 
         // Home Panel
         JPanel homePanel = createHomePanel();
@@ -132,20 +146,8 @@ public class background extends JFrame {
         contentPanel.add(profilePanel, "Profile");
 
         // Courses Panel
-        CoursesPage coursesPanel = new CoursesPage(cardLayout, contentPanel, pythonProgressLabelHome, javaProgressLabelHome);
+        CoursesPage coursesPanel = new CoursesPage(cardLayout, contentPanel, pythonProgressLabelHome, javaProgressLabelHome, cppProgressLabelHome, jsProgressLabelHome);
         contentPanel.add(coursesPanel, "Courses");
-
-        // Python Course Panel
-        JPanel pythonPanel = coursesPanel.createPythonPanel();
-        contentPanel.add(pythonPanel, "Python");
-
-        // Java Course Panel
-        JPanel javaPanel = coursesPanel.createJavaPanel();
-        contentPanel.add(javaPanel, "Java");
-
-        // Quiz Panel
-        JPanel quizPanel = createQuizPanel();
-        contentPanel.add(quizPanel, "Quiz");
 
         // Add components to the frame
         add(sidebar, BorderLayout.WEST);
@@ -208,6 +210,57 @@ public class background extends JFrame {
     // Method to update the position of the indicator panel
     private void updateIndicatorPosition(JButton button) {
         indicatorPanel.setLocation(0, button.getY());
+    }
+
+    // Method to toggle dark mode
+    private void toggleDarkMode() {
+        isDarkMode = !isDarkMode; // Toggle dark mode state
+
+        // Update background and text colors
+        if (isDarkMode) {
+            // Dark mode
+            contentPanel.setBackground(Color.BLACK);
+            sidebar.setBackground(Color.DARK_GRAY);
+            updateTextColors(Color.WHITE);
+        } else {
+            // Light mode
+            contentPanel.setBackground(Color.decode("#BBD2D1")); // Home page background color
+            sidebar.setBackground(Color.decode("#F9F7E7")); // Sidebar background color
+            updateTextColors(Color.BLACK);
+        }
+    }
+
+    // Method to update text colors for all components
+    private void updateTextColors(Color color) {
+        Component[] components = contentPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JPanel) {
+                updatePanelTextColors((JPanel) component, color);
+            }
+        }
+
+        // Update sidebar text colors
+        Component[] sidebarComponents = sidebar.getComponents();
+        for (Component component : sidebarComponents) {
+            if (component instanceof JLabel) {
+                ((JLabel) component).setForeground(color);
+            } else if (component instanceof JButton) {
+                ((JButton) component).setForeground(color);
+            }
+        }
+    }
+
+    // Recursive method to update text colors in a panel
+    private void updatePanelTextColors(JPanel panel, Color color) {
+        for (Component component : panel.getComponents()) {
+            if (component instanceof JLabel) {
+                ((JLabel) component).setForeground(color);
+            } else if (component instanceof JTextArea) {
+                ((JTextArea) component).setForeground(color);
+            } else if (component instanceof JPanel) {
+                updatePanelTextColors((JPanel) component, color);
+            }
+        }
     }
 
     // Method to create the home panel
@@ -342,12 +395,11 @@ public class background extends JFrame {
         gbc.weightx = 1.0; // Allow the component to take horizontal space
         gbc.weighty = 1.0; // Allow the component to take vertical space
 
-        
         JPanel horizontalPanel = new JPanel(new GridLayout(1, 1, 30, 0));
         horizontalPanel.setBackground(Color.decode("#BBD2D1")); // Match home page background color
         horizontalPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Add border to the progression box
 
-        ProgressNotes progressNotes = new ProgressNotes(pythonProgressLabelHome, javaProgressLabelHome);
+        ProgressNotes progressNotes = new ProgressNotes(pythonProgressLabelHome, javaProgressLabelHome, cppProgressLabelHome, jsProgressLabelHome);
         progressNotes.setBackground(Color.decode("#F9F7E7")); // Set course progression box background to #F9F7E7
         progressNotes.setForeground(Color.BLACK); // Set text color to black
 

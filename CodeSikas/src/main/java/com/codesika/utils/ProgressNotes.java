@@ -9,18 +9,20 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
+import javax.swing.JSeparator;
 
 public class ProgressNotes extends JPanel {
 
     private JLabel pythonProgressLabel;
     private JLabel javaProgressLabel;
-    private JProgressBar pythonProgressBar;
-    private JProgressBar javaProgressBar;
+    private JLabel cppProgressLabel;
+    private JLabel jsProgressLabel;
 
-    public ProgressNotes(JLabel pythonProgressLabel, JLabel javaProgressLabel) {
+    public ProgressNotes(JLabel pythonProgressLabel, JLabel javaProgressLabel, JLabel cppProgressLabel, JLabel jsProgressLabel) {
         this.pythonProgressLabel = pythonProgressLabel;
         this.javaProgressLabel = javaProgressLabel;
+        this.cppProgressLabel = cppProgressLabel;
+        this.jsProgressLabel = jsProgressLabel;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Color.decode("#F9F7E7")); // Same background color as home page
@@ -37,18 +39,25 @@ public class ProgressNotes extends JPanel {
         // Add spacing
         add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Add progress labels and bars
-        pythonProgressLabel.setFont(new Font("Inter", Font.PLAIN, 20));
-        pythonProgressLabel.setForeground(Color.BLACK);
-        pythonProgressLabel.setAlignmentX(CENTER_ALIGNMENT);
-        add(pythonProgressLabel);
-
-        javaProgressLabel.setFont(new Font("Inter", Font.PLAIN, 20));
-        javaProgressLabel.setForeground(Color.BLACK);
-        javaProgressLabel.setAlignmentX(CENTER_ALIGNMENT);
-        add(javaProgressLabel);
+        // Add progress labels and separators
+        addProgressLabelWithSeparator(pythonProgressLabel);
+        addProgressLabelWithSeparator(javaProgressLabel);
+        addProgressLabelWithSeparator(cppProgressLabel);
+        addProgressLabelWithSeparator(jsProgressLabel);
     }
 
-    // Method to update Python progress
-    
+    private void addProgressLabelWithSeparator(JLabel progressLabel) {
+        progressLabel.setFont(new Font("Inter", Font.PLAIN, 20));
+        progressLabel.setForeground(Color.BLACK);
+        progressLabel.setAlignmentX(CENTER_ALIGNMENT);
+        add(progressLabel);
+
+        JSeparator separator = new JSeparator();
+        separator.setMaximumSize(new Dimension(Integer.MAX_VALUE, 2)); // Make the separator a bit bolder
+        separator.setForeground(Color.BLACK); // Set the separator color to black
+        add(separator);
+
+        // Add spacing after the separator
+        add(Box.createRigidArea(new Dimension(0, 10)));
+    }
 }

@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 public class Profile extends JPanel {
 
     private Userdetail userDetail;
+    private JPanel notesPanel;
 
     public Profile(String username) {
         setLayout(new BorderLayout());
@@ -99,7 +100,7 @@ public class Profile extends JPanel {
             userDetailsPanel.add(verticalLine);
 
             // Notes Panel
-            JPanel notesPanel = new JPanel(new GridLayout(2, 2, 30, 30));
+            notesPanel = new JPanel(new GridLayout(2, 2, 30, 30));
             notesPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
             notesPanel.setBounds(420, 20, 800, 800);
             userDetailsPanel.add(notesPanel);
@@ -202,5 +203,15 @@ public class Profile extends JPanel {
             notesArea.setText("Error loading notes.");
         }
         notesArea.setText(notesContent.toString());
+    }
+
+    public void refreshNotes() {
+        notesPanel.removeAll();
+        addNotesSection(notesPanel, "Python", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\python_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\python.png");
+        addNotesSection(notesPanel, "Java", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\java_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java.png");
+        addNotesSection(notesPanel, "C++", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\cpp_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\c-.png");
+        addNotesSection(notesPanel, "JavaScript", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\javascript_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java-script.png");
+        notesPanel.revalidate();
+        notesPanel.repaint();
     }
 }
