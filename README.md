@@ -17,6 +17,10 @@ CodeSikas is a software development project built using Gradle, a powerful build
 
 ---
 
+![image](https://github.com/user-attachments/assets/297084c1-5332-4d92-bb7f-a0180e1a3804)
+
+
+
 ## What is Gradle?
 
 Gradle is a modern build automation tool used in software projects to compile code, run tests, package applications, and more. It supports multiple languages and provides powerful dependency management features. Gradle’s flexibility allows it to integrate seamlessly with various environments and frameworks.
