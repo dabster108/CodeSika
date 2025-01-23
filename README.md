@@ -17,7 +17,8 @@ CodeSikas is a software development project built using Gradle, a powerful build
 
 ---
 
-![image](https://github.com/user-attachments/assets/a1f36e9d-6342-43cc-abd8-a2b63bdb8aef)
+![image](https://github.com/user-attachments/assets/297084c1-5332-4d92-bb7f-a0180e1a3804)
+
 
 
 ## What is Gradle?
