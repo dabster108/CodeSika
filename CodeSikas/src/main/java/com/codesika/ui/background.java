@@ -92,18 +92,19 @@ public class background extends JFrame {
         sidebar.add(coursesBtn);
 
         // Light/Dark Theme Toggle Button
-        JButton themeToggleBtn = new JButton("Light/Dark");
-        themeToggleBtn.setBounds(20, 360, 180, 40); // Positioned above the logout button
-        themeToggleBtn.setFocusPainted(false);
-        themeToggleBtn.setBackground(Color.decode("#D9D9D9"));
-        themeToggleBtn.setForeground(Color.BLACK);
-        themeToggleBtn.setFont(new Font("Inter", Font.PLAIN, 16));
-        themeToggleBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        themeToggleBtn.setBorderPainted(false);
+       // Light/Dark Theme Toggle Button
+JButton themeToggleBtn = new JButton("Dark Mode");
+themeToggleBtn.setBounds(20, 360, 180, 40); // Positioned above the logout button
+themeToggleBtn.setFocusPainted(false);
+themeToggleBtn.setBackground(Color.decode("#D9D9D9"));
+themeToggleBtn.setForeground(Color.BLACK);
+themeToggleBtn.setFont(new Font("Inter", Font.PLAIN, 16));
+themeToggleBtn.setHorizontalAlignment(SwingConstants.LEFT);
+themeToggleBtn.setBorderPainted(false);
 
-        // Add action listener for theme toggle button
-        themeToggleBtn.addActionListener(e -> toggleDarkMode());
-        sidebar.add(themeToggleBtn);
+// Add action listener for theme toggle button
+themeToggleBtn.addActionListener(e -> toggleDarkMode(themeToggleBtn));
+sidebar.add(themeToggleBtn);
 
         // Logout Button
         JButton logoutBtn = createSidebarButton("Logout", 420);
@@ -213,53 +214,45 @@ public class background extends JFrame {
     }
 
     // Method to toggle dark mode
-    private void toggleDarkMode() {
-        isDarkMode = !isDarkMode; // Toggle dark mode state
-
-        // Update background and text colors
-        if (isDarkMode) {
-            // Dark mode
-            contentPanel.setBackground(Color.BLACK);
-            sidebar.setBackground(Color.DARK_GRAY);
-            updateTextColors(Color.WHITE);
-        } else {
-            // Light mode
-            contentPanel.setBackground(Color.decode("#BBD2D1")); // Home page background color
-            sidebar.setBackground(Color.decode("#F9F7E7")); // Sidebar background color
-            updateTextColors(Color.BLACK);
+    private void toggleDarkMode(JButton themeToggleBtn) {
+        isDarkMode = !isDarkMode;
+        Color backgroundColor = isDarkMode ? Color.BLACK : Color.decode("#BBD2D1");
+        Color textColor = isDarkMode ? Color.WHITE : Color.BLACK;
+    
+        // Update sidebar
+        sidebar.setBackground(isDarkMode ? Color.DARK_GRAY : Color.decode("#F9F7E7"));
+        for (Component component : sidebar.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(isDarkMode ? Color.GRAY : Color.decode("#D9D9D9"));
+                component.setForeground(textColor);
+            }
         }
+    
+        // Update content panel
+        contentPanel.setBackground(backgroundColor);
+        for (Component component : contentPanel.getComponents()) {
+            updateComponentColors(component, backgroundColor, textColor);
+        }
+    
+        // Update toggle button text
+        themeToggleBtn.setText(isDarkMode ? "Light Mode" : "Dark Mode");
+    
+        // Update other components if necessary
+        revalidate();
+        repaint();
     }
-
-    // Method to update text colors for all components
-    private void updateTextColors(Color color) {
-        Component[] components = contentPanel.getComponents();
-        for (Component component : components) {
-            if (component instanceof JPanel) {
-                updatePanelTextColors((JPanel) component, color);
+    
+    private void updateComponentColors(Component component, Color backgroundColor, Color textColor) {
+        if (component instanceof JPanel) {
+            component.setBackground(backgroundColor);
+            for (Component child : ((JPanel) component).getComponents()) {
+                updateComponentColors(child, backgroundColor, textColor);
             }
-        }
-
-        // Update sidebar text colors
-        Component[] sidebarComponents = sidebar.getComponents();
-        for (Component component : sidebarComponents) {
-            if (component instanceof JLabel) {
-                ((JLabel) component).setForeground(color);
-            } else if (component instanceof JButton) {
-                ((JButton) component).setForeground(color);
-            }
-        }
-    }
-
-    // Recursive method to update text colors in a panel
-    private void updatePanelTextColors(JPanel panel, Color color) {
-        for (Component component : panel.getComponents()) {
-            if (component instanceof JLabel) {
-                ((JLabel) component).setForeground(color);
-            } else if (component instanceof JTextArea) {
-                ((JTextArea) component).setForeground(color);
-            } else if (component instanceof JPanel) {
-                updatePanelTextColors((JPanel) component, color);
-            }
+        } else if (component instanceof JLabel) {
+            component.setForeground(textColor);
+        } else if (component instanceof JTextArea) {
+            component.setBackground(backgroundColor);
+            component.setForeground(textColor);
         }
     }
 
@@ -410,34 +403,6 @@ public class background extends JFrame {
         homePanel.add(textPanel, BorderLayout.CENTER);
 
         return homePanel;
-    }
-
-    // Method to create the Profile panel
-    private JPanel createProfilePanel() {
-        JPanel profilePanel = new JPanel();
-        profilePanel.setBackground(Color.BLACK); // Default to dark mode
-        profilePanel.setLayout(new BorderLayout());
-        JLabel profileLabel = new JLabel("Hello !, Profile", SwingConstants.CENTER);
-        profileLabel.setFont(new Font("Inter", Font.BOLD, 32));
-        profileLabel.setForeground(Color.WHITE); // Text color for dark mode
-        profilePanel.add(profileLabel, BorderLayout.CENTER);
-        return profilePanel;
-    }
-
-    // Method to create the Quiz panel
-    private JPanel createQuizPanel() {
-        JPanel quizPanel = new JPanel(new BorderLayout());
-        quizPanel.setBackground(Color.BLACK); // Default to dark mode
-
-        JLabel quizTitle = new JLabel("Python Quiz", SwingConstants.CENTER);
-        quizTitle.setFont(new Font("Inter", Font.BOLD, 24));
-        quizTitle.setForeground(Color.WHITE); // Text color for dark mode
-        quizTitle.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-        quizPanel.add(quizTitle, BorderLayout.NORTH);
-
-        // Add more quiz content here
-
-        return quizPanel;
     }
 
     public static void main(String[] args) {

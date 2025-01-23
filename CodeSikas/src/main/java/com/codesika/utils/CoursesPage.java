@@ -11,13 +11,19 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
@@ -30,16 +36,16 @@ public class CoursesPage extends JPanel {
     private JPanel contentPanel;
     private JScrollPane pythonScrollPane;
     private JScrollPane javaScrollPane;
-    private JScrollPane cppScrollPane; // Declare cppScrollPane
-    private JScrollPane jsScrollPane; // Declare jsScrollPane
+    private JScrollPane cppScrollPane;
+    private JScrollPane jsScrollPane;
     private JLabel pythonProgressLabel;
     private JLabel javaProgressLabel;
-    private JLabel cppProgressLabel; // Declare cppProgressLabel
-    private JLabel jsProgressLabel; // Declare jsProgressLabel
+    private JLabel cppProgressLabel;
+    private JLabel jsProgressLabel;
     private JLabel pythonProgressLabelHome;
     private JLabel javaProgressLabelHome;
-    private JLabel cppProgressLabelHome; // Progress label for C++ on home panel
-    private JLabel jsProgressLabelHome;  // Progress label for JavaScript on home panel
+    private JLabel cppProgressLabelHome;
+    private JLabel jsProgressLabelHome;
 
     public CoursesPage(CardLayout cardLayout, JPanel contentPanel, JLabel pythonProgressLabelHome, JLabel javaProgressLabelHome, JLabel cppProgressLabelHome, JLabel jsProgressLabelHome) {
         this.cardLayout = cardLayout;
@@ -59,7 +65,7 @@ public class CoursesPage extends JPanel {
 
         // Initialize the C++ panel and its scroll pane
         JPanel cppPanel = createCppPanel();
-        contentPanel.add(cppPanel, "cppPanel");
+        contentPanel.add(cppPanel, "C++");
 
         // Initialize the JavaScript panel and its scroll pane
         JPanel jsPanel = createJavaScriptPanel();
@@ -136,7 +142,7 @@ public class CoursesPage extends JPanel {
                 if (cppScrollPane != null) {
                     cppScrollPane.getVerticalScrollBar().setValue(0); // Scroll to the top
                 }
-                cardLayout.show(contentPanel, "cppPanel");
+                cardLayout.show(contentPanel, "C++");
             } else if (title.equals("JavaScript")) {
                 if (jsScrollPane != null) {
                     jsScrollPane.getVerticalScrollBar().setValue(0); // Scroll to the top
@@ -186,9 +192,15 @@ public class CoursesPage extends JPanel {
         pythonProgressLabel.setForeground(Color.BLACK); // Set text color to black
         pythonPanel.add(pythonProgressLabel, BorderLayout.NORTH);
 
-        Quizzes quizzes = new Quizzes();
-        JPanel quizPanel = quizzes.createQuizPanel("Python");
-        pythonPanel.add(quizPanel, BorderLayout.SOUTH);
+        // Add Quiz Button
+        JButton quizButton = new JButton("Start Python Quiz");
+        quizButton.setFont(new Font("Arial", Font.BOLD, 16));
+        quizButton.setBackground(new Color(30, 144, 255));
+        quizButton.setForeground(Color.WHITE);
+        quizButton.setFocusPainted(false);
+        quizButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        quizButton.addActionListener(e -> showQuiz("Python"));
+        pythonPanel.add(quizButton, BorderLayout.SOUTH);
 
         // Add Notes Section
         JPanel notesPanel = new JPanel(new BorderLayout());
@@ -274,9 +286,15 @@ public class CoursesPage extends JPanel {
         javaProgressLabel.setForeground(Color.black); // Light gray text color
         javaPanel.add(javaProgressLabel, BorderLayout.NORTH);
 
-        Quizzes quizzes = new Quizzes();
-        JPanel quizPanel = quizzes.createQuizPanel("Java");
-        javaPanel.add(quizPanel, BorderLayout.SOUTH);
+        // Add Quiz Button
+        JButton quizButton = new JButton("Start Java Quiz");
+        quizButton.setFont(new Font("Arial", Font.BOLD, 16));
+        quizButton.setBackground(new Color(30, 144, 255));
+        quizButton.setForeground(Color.WHITE);
+        quizButton.setFocusPainted(false);
+        quizButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        quizButton.addActionListener(e -> showQuiz("Java"));
+        javaPanel.add(quizButton, BorderLayout.SOUTH);
 
         // Add scroll listener to update progress
         javaScrollPane.getViewport().addChangeListener(e -> {
@@ -307,7 +325,7 @@ public class CoursesPage extends JPanel {
         saveButton.setBackground(new Color(30, 144, 255));
         saveButton.setForeground(Color.WHITE);
         saveButton.setFocusPainted(false);
-        saveButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        saveButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         saveButton.addActionListener(e -> {
             try (FileWriter writer = new FileWriter("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\java_notes.txt", true)) {
                 writer.write(notesArea.getText() + "\n");
@@ -359,6 +377,16 @@ public class CoursesPage extends JPanel {
         cppProgressLabel.setFont(new Font("Inter", Font.BOLD, 18));
         cppProgressLabel.setForeground(Color.BLACK); // Set text color to black
         cppPanel.add(cppProgressLabel, BorderLayout.NORTH);
+
+        // Add Quiz Button
+        JButton quizButton = new JButton("Start C++ Quiz");
+        quizButton.setFont(new Font("Arial", Font.BOLD, 16));
+        quizButton.setBackground(new Color(30, 144, 255));
+        quizButton.setForeground(Color.WHITE);
+        quizButton.setFocusPainted(false);
+        quizButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        quizButton.addActionListener(e -> showQuiz("C++"));
+        cppPanel.add(quizButton, BorderLayout.SOUTH);
 
         // Add scroll listener to update progress
         cppScrollPane.getViewport().addChangeListener(e -> {
@@ -445,6 +473,16 @@ public class CoursesPage extends JPanel {
         jsProgressLabel.setForeground(Color.BLACK); // Set text color to black
         jsPanel.add(jsProgressLabel, BorderLayout.NORTH);
 
+        // Add Quiz Button
+        JButton quizButton = new JButton("Start JavaScript Quiz");
+        quizButton.setFont(new Font("Arial", Font.BOLD, 16));
+        quizButton.setBackground(new Color(30, 144, 255));
+        quizButton.setForeground(Color.WHITE);
+        quizButton.setFocusPainted(false);
+        quizButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        quizButton.addActionListener(e -> showQuiz("JavaScript"));
+        jsPanel.add(quizButton, BorderLayout.SOUTH);
+
         // Add scroll listener to update progress
         jsScrollPane.getViewport().addChangeListener(e -> {
             JViewport viewport = (JViewport) e.getSource();
@@ -490,5 +528,102 @@ public class CoursesPage extends JPanel {
         jsPanel.add(notesPanel, BorderLayout.EAST);
 
         return jsPanel;
+    }
+
+    // Method to show a quiz for a course
+    private void showQuiz(String courseName) {
+        JPanel quizPanel = new JPanel(new BorderLayout());
+        quizPanel.setBackground(Color.WHITE);
+
+        // Quiz title
+        JLabel quizTitle = new JLabel(courseName + " Quiz", SwingConstants.CENTER);
+        quizTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        quizPanel.add(quizTitle, BorderLayout.NORTH);
+
+        // Quiz questions panel
+        JPanel questionsPanel = new JPanel();
+        questionsPanel.setLayout(new BoxLayout(questionsPanel, BoxLayout.Y_AXIS));
+
+        // Add 10 questions
+        List<ButtonGroup> buttonGroups = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            JLabel questionLabel = new JLabel(i + ". What is the output of 'print(2 + 2)' in Python?");
+            questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+            questionsPanel.add(questionLabel);
+
+            JRadioButton option1 = new JRadioButton("4");
+            JRadioButton option2 = new JRadioButton("22");
+            JRadioButton option3 = new JRadioButton("Error");
+            JRadioButton option4 = new JRadioButton("None of the above");
+
+            ButtonGroup group = new ButtonGroup();
+            group.add(option1);
+            group.add(option2);
+            group.add(option3);
+            group.add(option4);
+
+            buttonGroups.add(group);
+
+            questionsPanel.add(option1);
+            questionsPanel.add(option2);
+            questionsPanel.add(option3);
+            questionsPanel.add(option4);
+        }
+
+        JScrollPane questionsScrollPane = new JScrollPane(questionsPanel);
+        quizPanel.add(questionsScrollPane, BorderLayout.CENTER);
+
+        // Timer label
+        JLabel timerLabel = new JLabel("Time remaining: 15:00", SwingConstants.CENTER);
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        quizPanel.add(timerLabel, BorderLayout.NORTH);
+
+        // Start the timer
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int timeLeft = 900; // 15 minutes in seconds
+
+            @Override
+            public void run() {
+                if (timeLeft > 0) {
+                    int minutes = timeLeft / 60;
+                    int seconds = timeLeft % 60;
+                    timerLabel.setText("Time remaining: " + String.format("%02d:%02d", minutes, seconds));
+                    timeLeft--;
+                } else {
+                    timer.cancel();
+                    JOptionPane.showMessageDialog(quizPanel, "Time's up! Submitting your quiz.", "Time's Up", JOptionPane.INFORMATION_MESSAGE);
+                    evaluateQuiz(buttonGroups);
+                }
+            }
+        }, 0, 1000); // Update every second
+
+        // Submit button
+        JButton submitButton = new JButton("Submit");
+        submitButton.setFont(new Font("Arial", Font.BOLD, 16));
+        submitButton.setBackground(new Color(30, 144, 255));
+        submitButton.setForeground(Color.WHITE);
+        submitButton.setFocusPainted(false);
+        submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        submitButton.addActionListener(e -> {
+            timer.cancel();
+            evaluateQuiz(buttonGroups);
+        });
+        quizPanel.add(submitButton, BorderLayout.SOUTH);
+
+        // Add quiz panel to content panel
+        contentPanel.add(quizPanel, courseName + " Quiz");
+        cardLayout.show(contentPanel, courseName + " Quiz");
+    }
+
+    // Method to evaluate the quiz
+    private void evaluateQuiz(List<ButtonGroup> buttonGroups) {
+        int score = 0;
+        for (ButtonGroup group : buttonGroups) {
+            if (group.getSelection() != null && group.getSelection().getActionCommand().equals("4")) {
+                score++;
+            }
+        }
+        JOptionPane.showMessageDialog(this, "Your score: " + score + "/10", "Quiz Result", JOptionPane.INFORMATION_MESSAGE);
     }
 }
