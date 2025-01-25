@@ -130,11 +130,11 @@ sidebar.add(themeToggleBtn);
         javaProgressLabelHome.setText(" Java Progression: 0%");
         javaProgressLabelHome.setForeground(Color.BLACK);
 
-        cppProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\cpp.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+        cppProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\cplus.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         cppProgressLabelHome.setText(" C++ Progression: 0%");
         cppProgressLabelHome.setForeground(Color.BLACK);
 
-        jsProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\js.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+        jsProgressLabelHome = new JLabel(new ImageIcon(new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java-script.png").getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         jsProgressLabelHome.setText(" JavaScript Progression: 0%");
         jsProgressLabelHome.setForeground(Color.BLACK);
 

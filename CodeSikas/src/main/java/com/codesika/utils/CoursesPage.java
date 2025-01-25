@@ -29,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 public class CoursesPage extends JPanel {
 
@@ -546,15 +547,22 @@ public class CoursesPage extends JPanel {
 
         // Add 10 questions
         List<ButtonGroup> buttonGroups = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            JLabel questionLabel = new JLabel(i + ". What is the output of 'print(2 + 2)' in Python?");
+        List<String[]> questions = getQuestionsForCourse(courseName);
+
+        for (int i = 0; i < 10; i++) {
+            String[] questionData = questions.get(i);
+            JLabel questionLabel = new JLabel((i + 1) + ". " + questionData[0]);
             questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
             questionsPanel.add(questionLabel);
 
-            JRadioButton option1 = new JRadioButton("4");
-            JRadioButton option2 = new JRadioButton("22");
-            JRadioButton option3 = new JRadioButton("Error");
-            JRadioButton option4 = new JRadioButton("None of the above");
+            JRadioButton option1 = new JRadioButton(questionData[1]);
+            option1.setActionCommand(questionData[1]);
+            JRadioButton option2 = new JRadioButton(questionData[2]);
+            option2.setActionCommand(questionData[2]);
+            JRadioButton option3 = new JRadioButton(questionData[3]);
+            option3.setActionCommand(questionData[3]);
+            JRadioButton option4 = new JRadioButton(questionData[4]);
+            option4.setActionCommand(questionData[4]);
 
             ButtonGroup group = new ButtonGroup();
             group.add(option1);
@@ -592,8 +600,10 @@ public class CoursesPage extends JPanel {
                     timeLeft--;
                 } else {
                     timer.cancel();
-                    JOptionPane.showMessageDialog(quizPanel, "Time's up! Submitting your quiz.", "Time's Up", JOptionPane.INFORMATION_MESSAGE);
-                    evaluateQuiz(buttonGroups);
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(quizPanel, "Time's up! Submitting your quiz.", "Time's Up", JOptionPane.INFORMATION_MESSAGE);
+                        evaluateQuiz(buttonGroups, questions);
+                    });
                 }
             }
         }, 0, 1000); // Update every second
@@ -607,7 +617,7 @@ public class CoursesPage extends JPanel {
         submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         submitButton.addActionListener(e -> {
             timer.cancel();
-            evaluateQuiz(buttonGroups);
+            evaluateQuiz(buttonGroups, questions);
         });
         quizPanel.add(submitButton, BorderLayout.SOUTH);
 
@@ -616,11 +626,69 @@ public class CoursesPage extends JPanel {
         cardLayout.show(contentPanel, courseName + " Quiz");
     }
 
+    // Method to get questions for a specific course
+    private List<String[]> getQuestionsForCourse(String courseName) {
+        List<String[]> questions = new ArrayList<>();
+        switch (courseName) {
+            case "Python":
+                questions.add(new String[]{"What is the output of 'print(2 + 2)'?", "4", "22", "Error", "None of the above", "4"});
+                questions.add(new String[]{"Which keyword is used to define a function in Python?", "def", "function", "define", "func", "def"});
+                questions.add(new String[]{"What is the correct way to create a list in Python?", "[1, 2, 3]", "{1, 2, 3}", "(1, 2, 3)", "1, 2, 3", "[1, 2, 3]"});
+                questions.add(new String[]{"Which of the following is a Python framework?", "Django", "Spring", "React", "Angular", "Django"});
+                questions.add(new String[]{"What is the output of 'print(type(3.14))'?", "<class 'float'>", "<class 'int'>", "<class 'str'>", "<class 'double'>", "<class 'float'>"});
+                questions.add(new String[]{"Which method is used to add an element to a list?", "append()", "add()", "insert()", "push()", "append()"});
+                questions.add(new String[]{"What is the output of 'print(\"Hello\" * 3)'?", "HelloHelloHello", "Hello3", "Error", "None of the above", "HelloHelloHello"});
+                questions.add(new String[]{"Which of the following is a Python IDE?", "PyCharm", "Eclipse", "NetBeans", "IntelliJ", "PyCharm"});
+                questions.add(new String[]{"What is the output of 'print(len(\"Python\"))'?", "6", "5", "7", "Error", "6"});
+                questions.add(new String[]{"Which operator is used for exponentiation in Python?", "**", "^", "^^", "//", "**"});
+                break;
+            case "Java":
+                questions.add(new String[]{"What is the output of 'System.out.println(2 + 2)'?", "4", "22", "Error", "None of the above", "4"});
+                questions.add(new String[]{"Which keyword is used to define a class in Java?", "class", "interface", "struct", "object", "class"});
+                questions.add(new String[]{"What is the correct way to create an array in Java?", "int[] arr = {1, 2, 3};", "int arr[] = {1, 2, 3};", "int arr = {1, 2, 3};", "int arr = new int[3];", "int[] arr = {1, 2, 3};"});
+                questions.add(new String[]{"Which of the following is a Java framework?", "Spring", "Django", "React", "Angular", "Spring"});
+                questions.add(new String[]{"What is the output of 'System.out.println(3.14 instanceof Double)'?", "true", "false", "Error", "None of the above", "false"});
+                questions.add(new String[]{"Which method is used to add an element to an ArrayList?", "add()", "append()", "insert()", "push()", "add()"});
+                questions.add(new String[]{"What is the output of 'System.out.println(\"Hello\" + 3)'?", "Hello3", "HelloHelloHello", "Error", "None of the above", "Hello3"});
+                questions.add(new String[]{"Which of the following is a Java IDE?", "IntelliJ", "PyCharm", "Eclipse", "NetBeans", "IntelliJ"});
+                questions.add(new String[]{"What is the output of 'System.out.println(\"Java\".length())'?", "4", "5", "6", "Error", "4"});
+                questions.add(new String[]{"Which operator is used for exponentiation in Java?", "Math.pow()", "^", "**", "//", "Math.pow()"});
+                break;
+            case "C++":
+                questions.add(new String[]{"What is the output of 'cout << 2 + 2;'?", "4", "22", "Error", "None of the above", "4"});
+                questions.add(new String[]{"Which keyword is used to define a class in C++?", "class", "struct", "interface", "object", "class"});
+                questions.add(new String[]{"What is the correct way to create an array in C++?", "int arr[] = {1, 2, 3};", "int[] arr = {1, 2, 3};", "int arr = {1, 2, 3};", "int arr = new int[3];", "int arr[] = {1, 2, 3};"});
+                questions.add(new String[]{"Which of the following is a C++ framework?", "Qt", "Spring", "React", "Angular", "Qt"});
+                questions.add(new String[]{"What is the output of 'cout << sizeof(3.14);'?", "8", "4", "16", "Error", "8"});
+                questions.add(new String[]{"Which method is used to add an element to a vector?", "push_back()", "add()", "insert()", "append()", "push_back()"});
+                questions.add(new String[]{"What is the output of 'cout << \"Hello\" + 3;'?", "Error", "Hello3", "HelloHelloHello", "None of the above", "Error"});
+                questions.add(new String[]{"Which of the following is a C++ IDE?", "Code::Blocks", "PyCharm", "Eclipse", "NetBeans", "Code::Blocks"});
+                questions.add(new String[]{"What is the output of 'cout << strlen(\"C++\");'?", "3", "4", "5", "Error", "3"});
+                questions.add(new String[]{"Which operator is used for exponentiation in C++?", "pow()", "^", "**", "//", "pow()"});
+                break;
+            case "JavaScript":
+                questions.add(new String[]{"What is the output of 'console.log(2 + 2)'?", "4", "22", "Error", "None of the above", "4"});
+                questions.add(new String[]{"Which keyword is used to define a variable in JavaScript?", "let", "var", "const", "all of the above", "all of the above"});
+                questions.add(new String[]{"What is the correct way to create an array in JavaScript?", "[1, 2, 3]", "{1, 2, 3}", "(1, 2, 3)", "1, 2, 3", "[1, 2, 3]"});
+                questions.add(new String[]{"Which of the following is a JavaScript framework?", "React", "Spring", "Django", "Angular", "React"});
+                questions.add(new String[]{"What is the output of 'console.log(typeof 3.14)'?", "number", "float", "string", "double", "number"});
+                questions.add(new String[]{"Which method is used to add an element to an array?", "push()", "add()", "insert()", "append()", "push()"});
+                questions.add(new String[]{"What is the output of 'console.log(\"Hello\" + 3)'?", "Hello3", "HelloHelloHello", "Error", "None of the above", "Hello3"});
+                questions.add(new String[]{"Which of the following is a JavaScript IDE?", "VS Code", "PyCharm", "Eclipse", "NetBeans", "VS Code"});
+                questions.add(new String[]{"What is the output of 'console.log(\"JavaScript\".length)'?", "10", "11", "12", "Error", "10"});
+                questions.add(new String[]{"Which operator is used for exponentiation in JavaScript?", "**", "^", "^^", "//", "**"});
+                break;
+        }
+        return questions;
+    }
+
     // Method to evaluate the quiz
-    private void evaluateQuiz(List<ButtonGroup> buttonGroups) {
+    private void evaluateQuiz(List<ButtonGroup> buttonGroups, List<String[]> questions) {
         int score = 0;
-        for (ButtonGroup group : buttonGroups) {
-            if (group.getSelection() != null && group.getSelection().getActionCommand().equals("4")) {
+        for (int i = 0; i < buttonGroups.size(); i++) {
+            ButtonGroup group = buttonGroups.get(i);
+            String[] questionData = questions.get(i);
+            if (group.getSelection() != null && group.getSelection().getActionCommand().equals(questionData[5])) {
                 score++;
             }
         }

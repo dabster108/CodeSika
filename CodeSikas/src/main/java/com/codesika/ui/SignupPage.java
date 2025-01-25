@@ -68,6 +68,8 @@ formPanel.setBackground(Color.decode("#F9F7E7")); // Set background color to #F9
 
 JLabel animatedLabel = new JLabel();
 animatedLabel.setFont(new Font("Verdana", Font.BOLD, 24));
+
+
 animatedLabel.setForeground(new Color(34, 45, 65));
 animatedLabel.setBounds(50, 30, 400, 30);
 formPanel.add(animatedLabel);

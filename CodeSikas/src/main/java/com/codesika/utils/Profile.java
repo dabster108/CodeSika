@@ -124,14 +124,13 @@ public class Profile extends JPanel {
             quizRemarksLabel.setForeground(Color.BLACK); // Updated text color
             quizRemarksPanel.add(quizRemarksLabel, BorderLayout.NORTH);
 
-            JPanel quizPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+            JPanel quizPanel = new JPanel();
+            quizPanel.setLayout(new GridLayout(4, 1, 10, 10)); // 4 rows for 4 quizzes
             quizPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
             quizRemarksPanel.add(quizPanel, BorderLayout.CENTER);
 
-            addQuizSection(quizPanel, "Python Quiz");
-            addQuizSection(quizPanel, "Java Quiz");
-            addQuizSection(quizPanel, "C++ Quiz");
-            addQuizSection(quizPanel, "JavaScript Quiz");
+            // Load and display quiz scores
+            loadQuizScores(quizPanel);
 
             add(userDetailsPanel, BorderLayout.CENTER);
         } else {
@@ -142,6 +141,26 @@ public class Profile extends JPanel {
         }
     }
 
+    // Method to load quiz scores from a file
+    private void loadQuizScores(JPanel quizPanel) {
+        String filePath = "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\quiz_scores.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                JLabel quizScoreLabel = new JLabel(line, SwingConstants.CENTER);
+                quizScoreLabel.setFont(new Font("Inter", Font.PLAIN, 18)); // Updated font
+                quizScoreLabel.setForeground(Color.BLACK); // Updated text color
+                quizPanel.add(quizScoreLabel);
+            }
+        } catch (IOException e) {
+            JLabel errorLabel = new JLabel("No quiz scores available.", SwingConstants.CENTER);
+            errorLabel.setFont(new Font("Inter", Font.PLAIN, 18)); // Updated font
+            errorLabel.setForeground(Color.BLACK); // Updated text color
+            quizPanel.add(errorLabel);
+        }
+    }
+
+    // Method to add notes section
     private void addNotesSection(JPanel notesPanel, String courseName, String notesFilePath, String imagePath) {
         JPanel coursePanel = new JPanel(new BorderLayout());
         coursePanel.setBackground(Color.decode("#BBD2D1")); // Match background color
@@ -178,20 +197,7 @@ public class Profile extends JPanel {
         notesPanel.add(coursePanel);
     }
 
-    private void addQuizSection(JPanel quizPanel, String quizName) {
-        JPanel quizBox = new JPanel(new BorderLayout());
-        quizBox.setBackground(Color.decode("#BBD2D1")); // Match background color
-        quizBox.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Updated border color
-        quizBox.setPreferredSize(new Dimension(360, 180));
-
-        JLabel quizLabel = new JLabel(quizName, SwingConstants.CENTER);
-        quizLabel.setFont(new Font("Inter", Font.BOLD, 20)); // Updated font
-        quizLabel.setForeground(Color.BLACK); // Updated text color
-        quizBox.add(quizLabel, BorderLayout.CENTER);
-
-        quizPanel.add(quizBox);
-    }
-
+    // Method to load notes from a file
     private void loadNotesFromFile(String filePath, JTextArea notesArea) {
         StringBuilder notesContent = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -205,6 +211,7 @@ public class Profile extends JPanel {
         notesArea.setText(notesContent.toString());
     }
 
+    // Method to refresh notes and quiz scores
     public void refreshNotes() {
         notesPanel.removeAll();
         addNotesSection(notesPanel, "Python", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\python_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\python.png");
@@ -213,5 +220,9 @@ public class Profile extends JPanel {
         addNotesSection(notesPanel, "JavaScript", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\javascript_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java-script.png");
         notesPanel.revalidate();
         notesPanel.repaint();
+
+        // Refresh quiz scores
+        JPanel quizPanel = (JPanel) ((JPanel) notesPanel.getParent()).getComponent(2); // Adjust this based on your layout
+        loadQuizScores(quizPanel);
     }
 }
