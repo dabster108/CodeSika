@@ -13,6 +13,9 @@ dependencies {
     implementation 'org.json:json:20210307' // JSON dependency
     implementation 'org.openjfx:javafx-controls:19'
     implementation 'org.openjfx:javafx-media:19' // For video media functionality
+    implementation 'org.openjfx:javafx-base:19'
+    implementation 'org.openjfx:javafx-fxml:19'
+    implementation 'org.openjfx:javafx-swing:19'
 }
 
 application {

@@ -46,21 +46,29 @@ public class SignupPage extends JFrame {
 
         
 
-        JPanel leftPanel = new JPanel();
+   // Left Panel with Black Background and Centered Image
+JPanel leftPanel = new JPanel(new BorderLayout());
 leftPanel.setBounds(0, 0, 450, 600);
 leftPanel.setBackground(Color.BLACK);
-leftPanel.setLayout(new BorderLayout());
 
-// Add image to the top left corner
-ImageIcon originalIcon = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\logo.png"); // Replace with the actual path to your image
+
+ImageIcon topIcon = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\code.jpg"); // Replace with the actual path to your top image
+JLabel topImageLabel = new JLabel(topIcon);
+topImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+topImageLabel.setVerticalAlignment(SwingConstants.TOP);
+leftPanel.add(topImageLabel, BorderLayout.NORTH);
+
+// Add image to the center of the left panel
+ImageIcon originalIcon = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\logosss.png"); // Replace with the actual path to your image
 Image originalImage = originalIcon.getImage();
-Image scaledImage = originalImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH); // Resize the image to 50x50
+Image scaledImage = originalImage.getScaledInstance(350, 350, Image.SCALE_SMOOTH); // Resize the image to 200x200
 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 JLabel imageLabel = new JLabel(scaledIcon);
-imageLabel.setHorizontalAlignment(SwingConstants.LEFT);
-imageLabel.setVerticalAlignment(SwingConstants.TOP);
-leftPanel.add(imageLabel, BorderLayout.NORTH);
+imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+imageLabel.setVerticalAlignment(SwingConstants.CENTER);
+leftPanel.add(imageLabel, BorderLayout.CENTER);
 
+// Form Panel
 JPanel formPanel = new JPanel();
 formPanel.setBounds(450, 0, 450, 600);
 formPanel.setLayout(null);
@@ -68,8 +76,6 @@ formPanel.setBackground(Color.decode("#F9F7E7")); // Set background color to #F9
 
 JLabel animatedLabel = new JLabel();
 animatedLabel.setFont(new Font("Verdana", Font.BOLD, 24));
-
-
 animatedLabel.setForeground(new Color(34, 45, 65));
 animatedLabel.setBounds(50, 30, 400, 30);
 formPanel.add(animatedLabel);
@@ -159,6 +165,7 @@ formPanel.add(forgotPasswordLabel);
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
 
     private void animateText(JLabel label) {
         String firstText = "Welcome to Code Sika";

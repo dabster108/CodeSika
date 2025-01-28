@@ -111,27 +111,6 @@ public class Profile extends JPanel {
             addNotesSection(notesPanel, "C++", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\cpp_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\c-.png");
             addNotesSection(notesPanel, "JavaScript", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\javascript_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java-script.png");
 
-            // Quiz Remarks Panel
-            JPanel quizRemarksPanel = new JPanel();
-            quizRemarksPanel.setLayout(new BorderLayout());
-            quizRemarksPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
-            quizRemarksPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Updated border color
-            quizRemarksPanel.setBounds(1240, 20, 400, 800);
-            userDetailsPanel.add(quizRemarksPanel);
-
-            JLabel quizRemarksLabel = new JLabel("Quiz Remarks", SwingConstants.CENTER);
-            quizRemarksLabel.setFont(new Font("Inter", Font.BOLD, 24)); // Updated font
-            quizRemarksLabel.setForeground(Color.BLACK); // Updated text color
-            quizRemarksPanel.add(quizRemarksLabel, BorderLayout.NORTH);
-
-            JPanel quizPanel = new JPanel();
-            quizPanel.setLayout(new GridLayout(4, 1, 10, 10)); // 4 rows for 4 quizzes
-            quizPanel.setBackground(Color.decode("#BBD2D1")); // Match background color
-            quizRemarksPanel.add(quizPanel, BorderLayout.CENTER);
-
-            // Load and display quiz scores
-            loadQuizScores(quizPanel);
-
             add(userDetailsPanel, BorderLayout.CENTER);
         } else {
             JLabel errorLabel = new JLabel("Notes Available Soon.", SwingConstants.CENTER);
@@ -211,7 +190,7 @@ public class Profile extends JPanel {
         notesArea.setText(notesContent.toString());
     }
 
-    // Method to refresh notes and quiz scores
+    // Method to refresh notes
     public void refreshNotes() {
         notesPanel.removeAll();
         addNotesSection(notesPanel, "Python", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\python_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\python.png");
@@ -220,9 +199,5 @@ public class Profile extends JPanel {
         addNotesSection(notesPanel, "JavaScript", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\notes\\javascript_notes.txt", "C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\java-script.png");
         notesPanel.revalidate();
         notesPanel.repaint();
-
-        // Refresh quiz scores
-        JPanel quizPanel = (JPanel) ((JPanel) notesPanel.getParent()).getComponent(2); // Adjust this based on your layout
-        loadQuizScores(quizPanel);
     }
 }
