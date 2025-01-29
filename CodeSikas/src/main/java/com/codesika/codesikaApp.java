@@ -19,12 +19,6 @@ public class codesikaApp {
             e.printStackTrace();
         }
 
-        // Uncomment the following block if you want to create and display the background page directly
-        // try {
-        //     // Create and display the background page
-        //     new background("testUser");
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-        // }
+       
     }
 }

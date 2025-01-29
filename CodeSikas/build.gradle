@@ -23,6 +23,13 @@ application {
     mainClass.set("com.codesika.codesikaApp")
 }
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+}
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(22)) // Adjust the version to match your JDK

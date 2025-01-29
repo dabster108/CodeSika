@@ -2,3 +2,5 @@ Python Notes
 Python Notes
 python notes
 Python ??
+Python notes
+What is Python ?

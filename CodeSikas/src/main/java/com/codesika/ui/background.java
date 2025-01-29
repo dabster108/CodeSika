@@ -69,7 +69,7 @@ public class background extends JFrame {
         sidebar.setLayout(null); // Absolute positioning for custom design
 
         // User Profile Placeholder (Replaced with Image)
-        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\manss.png");
+        ImageIcon userImage = new ImageIcon("C:\\Users\\3108d\\Desktop\\CodeSika\\CodeSikas\\src\\main\\resources\\images\\mainsss.png");
         Image scaledImage = userImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         JLabel userIcon = new JLabel(new CircularImageIcon(scaledImage));
         userIcon.setBounds(60, 30, 100, 100);
@@ -115,6 +115,8 @@ sidebar.add(themeToggleBtn);
         indicatorPanel.setBackground(Color.BLACK);
         indicatorPanel.setBounds(0, 180, 5, 40);
         sidebar.add(indicatorPanel);
+
+        
 
         // Main Content Panel with CardLayout
         cardLayout = new CardLayout();
