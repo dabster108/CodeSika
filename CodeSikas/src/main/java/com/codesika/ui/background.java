@@ -1,5 +1,5 @@
 package com.codesika.ui;
-//updated
+//updated code for the project
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
