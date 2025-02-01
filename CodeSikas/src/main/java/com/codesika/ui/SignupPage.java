@@ -1,3 +1,4 @@
+// Importing packages
 package com.codesika.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -45,7 +46,7 @@ public class SignupPage extends JFrame {
 
         
 
-   // Left Panel with Black Background and Centered Image
+// Left Panel with Black Background and Centered Image
 JPanel leftPanel = new JPanel(new BorderLayout());
 leftPanel.setBounds(0, 0, 450, 600);
 leftPanel.setBackground(Color.BLACK);
@@ -262,19 +263,6 @@ formPanel.add(forgotPasswordLabel);
         passwordField.setBorder(BorderFactory.createLineBorder(new Color(34, 45, 65), 1));
         newWindow.add(passwordField);
 
-        // Show/Hide Password Icon
-        // JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
-        // showPasswordCheckBox.setFont(new Font("Arial", Font.PLAIN, 14));
-        // showPasswordCheckBox.setBounds(50, 310, 150, 30);
-        // showPasswordCheckBox.setBackground(new Color(245, 245, 245));
-        // showPasswordCheckBox.addActionListener(e -> {
-        //     if (showPasswordCheckBox.isSelected()) {
-        //         passwordField.setEchoChar((char) 0); // Show password
-        //     } else {
-        //         passwordField.setEchoChar('*'); // Hide password
-        //     }
-        // });
-        // newWindow.add(showPasswordCheckBox);
 
 
 
